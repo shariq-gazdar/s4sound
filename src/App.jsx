@@ -1,9 +1,10 @@
 import { useState } from "react";
-import SideBar from "./components/SideBar";
+import Homepage from "./components/Homepage";
+
 function App() {
   return (
-    <div>
-      <SideBar />
+    <div className="bg-neutral-900">
+      <Homepage />
     </div>
   );
 }
