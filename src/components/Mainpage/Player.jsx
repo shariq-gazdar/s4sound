@@ -15,7 +15,7 @@ function Player() {
   };
 
   return (
-    <div className="text-white fixed bottom-0 bg-neutral-800 py-5 px-12 flex justify-between w-full items-center">
+    <div className="text-white fixed bottom-0 bg-neutral-800 py-5 px-12 flex justify-between w-full items-center rounded-t-lg border-t border-gray-700">
       {/* Album Art */}
       <img src={Dummy} alt="Album Art" className="w-20 rounded-2xl" />
 
@@ -65,21 +65,24 @@ function Player() {
             </svg>
           </span>
         </div>
-
-        {/* Main Slider */}
-        <input
-          type="range"
-          name="mainDuration"
-          id="mainDuration"
-          min="0"
-          max="100"
-          value={mainSliderValue}
-          onChange={handleMainSliderChange}
-          style={{
-            background: `linear-gradient(to right, green ${mainSliderValue}%, gray ${mainSliderValue}%)`,
-          }}
-          className="w-1/2 h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
-        />
+        <span className="flex items-center justify-center gap-x-2">
+          <h1>00:00</h1>
+          {/* Main Slider */}
+          <input
+            type="range"
+            name="mainDuration"
+            id="mainDuration"
+            min="0"
+            max="100"
+            value={mainSliderValue}
+            onChange={handleMainSliderChange}
+            style={{
+              background: `linear-gradient(to right, #16a34a ${mainSliderValue}%, gray ${mainSliderValue}%)`,
+            }}
+            className="w-60   h-[1px] bg-gray-300 rounded-lg appearance-none cursor-pointer"
+          />
+          <h1>00:00</h1>
+        </span>
       </div>
 
       {/* Volume Control */}
@@ -102,9 +105,9 @@ function Player() {
           value={volumeSliderValue}
           onChange={handleVolumeSliderChange}
           style={{
-            background: `linear-gradient(to right, green ${volumeSliderValue}%, gray ${volumeSliderValue}%)`,
+            background: `linear-gradient(to right, #16a34a ${volumeSliderValue}%, white ${volumeSliderValue}%)`,
           }}
-          className="w-full h-2 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+          className="w-full h-[1px] bg-gray-300 rounded-lg appearance-none cursor-pointer"
         />
       </div>
     </div>
