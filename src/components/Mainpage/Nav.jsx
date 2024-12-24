@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Search from "/Coding/Repos/s4sound/src/assets/search.svg";
-function Nav() {
+function Nav(props) {
+  const [search, getSearch] = useState("");
+  const getSearchVal = () => {
+    const searchInput = document.querySelector(".search input").value;
+    // console.log(searchInput);
+    getSearch(searchInput);
+    props.getSearchTerm(searchInput);
+  };
+
   return (
     <nav className="flex justify-center lg:justify-between p-5 text-white items-center gap-x-10 ">
       <div className="search relative">
@@ -13,6 +21,7 @@ function Nav() {
           src={Search}
           alt=""
           className="absolute top-2 right-3 cursor-pointer"
+          onClick={getSearchVal}
         />
       </div>
 
