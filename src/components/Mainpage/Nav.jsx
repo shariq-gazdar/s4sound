@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Search from "/Coding/Repos/s4sound/src/assets/search.svg";
-function Nav(props) {
+function Nav({ setSearchTerm }) {
   const [searchVal, setSearchVal] = useState("");
   const handleSearchChange = (e) => {
     setSearchVal(e.target.value);

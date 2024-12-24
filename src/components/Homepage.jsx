@@ -4,13 +4,10 @@ import Mainpage from "./Mainpage";
 import Player from "./Mainpage/Player";
 
 function Homepage() {
-  const [searchTerm, setSearchTerm] = useState(""); // Correctly use setSearchTerm
-  console.log(searchTerm, "Homepage");
-
   return (
     <div className="flex">
       <SideBar />
-      <Mainpage getSearch={setSearchTerm} />
+      <Mainpage />
       <Player />
     </div>
   );
