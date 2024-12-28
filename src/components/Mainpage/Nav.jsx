@@ -1,10 +1,16 @@
 import React, { useState } from "react";
 import Search from "/Coding/Repos/s4sound/src/assets/search.svg";
-function Nav({ setSearchTerm }) {
+import { auth } from "/Coding/Repos/s4sound/src/config/firebase";
+import { signOut } from "firebase/auth";
+function Nav({ setSearchTerm, setUser }) {
   const [searchVal, setSearchVal] = useState("");
   const handleSearchChange = (e) => {
     setSearchVal(e.target.value);
     apiUpdating(e);
+  };
+  const handleSignOut = () => {
+    signOut(auth);
+    setUser(false);
   };
   const apiUpdating = (searchVal) => {
     console.log("Updating");
@@ -31,8 +37,17 @@ function Nav({ setSearchTerm }) {
           onClick={handleSearchChange}
         />
       </div>
-
-      <h1 className="font-bold">Shairq Gazdar</h1>
+      <div className="flex gap-x-3 items-center">
+        <img
+          src={auth.currentUser.photoURL}
+          alt=""
+          className="w-10 rounded-full"
+        />
+        <h1 className="font-bold">{auth.currentUser.email}</h1>
+        <button className="bg-green-600 p-2 rounded-lg" onClick={handleSignOut}>
+          SignOut
+        </button>
+      </div>
     </nav>
   );
 }
