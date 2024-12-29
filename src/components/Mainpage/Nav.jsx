@@ -2,26 +2,27 @@ import React, { useState } from "react";
 import Search from "/Coding/Repos/s4sound/src/assets/search.svg";
 import { auth } from "/Coding/Repos/s4sound/src/config/firebase";
 import { signOut } from "firebase/auth";
-function Nav({ setSearchTerm, setUser }) {
-  const [searchVal, setSearchVal] = useState("");
-  const handleSearchChange = (e) => {
-    setSearchVal(e.target.value);
-    apiUpdating(e);
+function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
+  const apiUpdate = () => {
+    setResult([]);
+    if (searchTerm) {
+      fetch(
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchTerm}&type=video&videoCategoryId=10&key=AIzaSyDBFgCzwTkG7tOKIW-gm0PrN-y8TcJmQFc`
+      ).then((res) => {
+        res.json().then((data) => {
+          console.log(data.items);
+          setResult(data.items);
+        });
+      });
+    } else {
+      alert("Please Enter A Song Name");
+    }
   };
   const handleSignOut = () => {
     signOut(auth);
     setUser(false);
   };
-  const apiUpdating = (searchVal) => {
-    console.log("Updating");
-    fetch(`https://saavn.dev/api/search?query=${searchVal}`).then(
-      (response) => {
-        response.json().then((data) => {
-          console.log(data);
-        });
-      }
-    );
-  };
+
   return (
     <nav className="flex justify-center lg:justify-between p-5 text-white items-center gap-x-10 ">
       <div className="search relative">
@@ -29,12 +30,15 @@ function Nav({ setSearchTerm, setUser }) {
           type="text"
           className="border-none hover:ring-2 hover:ring-green-600 focus:outline-none w-40 lg:w-80 rounded-2xl bg-gray-100/10 p-2 px-4"
           placeholder="Search"
+          onChange={(e) => {
+            setSearchTerm(e.target.value);
+          }}
         />
         <img
           src={Search}
           alt=""
           className="absolute top-2 right-3 cursor-pointer"
-          onClick={handleSearchChange}
+          onClick={apiUpdate}
         />
       </div>
       <div className="flex gap-x-3 items-center">
