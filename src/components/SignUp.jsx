@@ -2,73 +2,93 @@ import React, { useState } from "react";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import googleImage from "../assets/google.png";
 import { googleAuthProvider, auth } from "../config/firebase";
+
 function SignUp({ setUser }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const signUp = async () => {
-    if (password == confirmPass) {
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        setUser(true);
-      } catch (error) {
-        console.log(error.message);
-      }
-    } else {
-      alert("Passwords do not match!");
+    setErrorMessage(""); // Clear error message before new attempt
+    if (!name || !email || !password || !confirmPass) {
+      setErrorMessage("All fields are required.");
+      return;
+    }
+    if (password !== confirmPass) {
+      setErrorMessage("Passwords do not match.");
+      return;
+    }
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      setUser(true);
+    } catch (error) {
+      setErrorMessage(
+        error.message || "Something went wrong. Please try again."
+      );
     }
   };
+
   const signInWithGoogle = async () => {
-    await signInWithPopup(auth, googleAuthProvider);
-    console.log(auth.currentUser);
-    setUser(true);
+    setErrorMessage(""); // Clear error message before new attempt
+    try {
+      await signInWithPopup(auth, googleAuthProvider);
+      setUser(true);
+    } catch (error) {
+      setErrorMessage(
+        error.message || "Google sign-in failed. Please try again."
+      );
+    }
   };
+
   return (
-    <div className="bg-neutral-900 flex justify-center items-center flex-col h-svh gap-y-5">
-      <h1 className="text-white text-2xl font-extrabold">SignUp</h1>
+    <div className="bg-neutral-900 flex justify-center items-center flex-col h-screen gap-y-5">
+      <h1 className="text-white text-2xl font-extrabold">Sign Up</h1>
+
+      {errorMessage && (
+        <p className="text-red-500 text-center">{errorMessage}</p>
+      )}
+
       <input
         type="text"
         placeholder="Name"
-        className="p-3 rounded-lg"
-        onChange={(e) => {
-          setName(e.target.value);
-        }}
+        className="p-3 rounded-lg w-72"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
       />
       <input
         type="email"
         placeholder="Email"
-        className="p-3 rounded-lg"
-        onChange={(e) => {
-          setEmail(e.target.value);
-        }}
+        className="p-3 rounded-lg w-72"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
       />
       <input
         type="password"
-        placeholder="password"
-        className="p-3 rounded-lg"
-        onChange={(e) => {
-          setPassword(e.target.value);
-        }}
+        placeholder="Password"
+        className="p-3 rounded-lg w-72"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
       <input
         type="password"
-        placeholder="confirm password"
-        className="p-3 rounded-lg"
-        onChange={(e) => {
-          setConfirmPass(e.target.value);
-        }}
+        placeholder="Confirm Password"
+        className="p-3 rounded-lg w-72"
+        value={confirmPass}
+        onChange={(e) => setConfirmPass(e.target.value)}
       />
-      <div className="flex flex-col gap-y-1">
-        <button className="bg-white p-2 rounded-lg" onClick={signUp}>
-          SignUp
+
+      <div className="flex flex-col gap-y-3 w-72">
+        <button className="bg-white p-3 rounded-lg font-bold" onClick={signUp}>
+          Sign Up
         </button>
         <button
-          className="bg-blue-400 p-2 rounded-lg flex items-center"
+          className="bg-blue-500 p-3 rounded-lg font-bold flex items-center justify-center"
           onClick={signInWithGoogle}
         >
-          SignIn With Google
-          <img src={googleImage} alt="" className="w-10 " />
+          Sign In with Google
+          <img src={googleImage} alt="Google" className="w-6 ml-2" />
         </button>
       </div>
     </div>

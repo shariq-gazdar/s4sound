@@ -1,6 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC_2C3FG9G3Sj1-HwEGd3FTZMl0HYBdYRg",
@@ -16,4 +21,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const auth = getAuth(app);
+setPersistence(auth, browserLocalPersistence)
+  .then(() => {
+    console.log("Persistence set to local.");
+  })
+  .catch((error) => {
+    console.error("Error setting persistence:", error);
+  });
 export const googleAuthProvider = new GoogleAuthProvider();

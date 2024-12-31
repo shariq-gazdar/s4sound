@@ -1,14 +1,15 @@
 import React, { useState } from "react";
 import Nav from "./Mainpage/Nav";
 import CardsContainer from "./CardsContainer";
-import YtAudioPlayer from "./Mainpage/YtAudioPlayer";
+import YouTubeController from "./Mainpage/YtAudioPlayer";
 
 function Mainpage({ setUser }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState([]);
-  const [videoId, setVideoId] = useState(null);
+  const [videoId, setVideoId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [allIds, setAllIds] = useState();
   console.log(videoId);
 
   return (
@@ -33,7 +34,7 @@ function Mainpage({ setUser }) {
         />
       )}
 
-      {videoId && <YtAudioPlayer videoId={videoId} />}
+      {videoId && <YouTubeController videoId={videoId} />}
     </div>
   );
 }
