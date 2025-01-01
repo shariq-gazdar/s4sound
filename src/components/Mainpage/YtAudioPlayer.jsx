@@ -1,22 +1,25 @@
 import React, { useEffect, useRef, useState } from "react";
 import play from "./playerAssests/play.png";
 import pause from "./playerAssests/pause.png";
-import volume from "./playerAssests/volume.png";
+import volumeIcon from "./playerAssests/volume.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
+
 const YouTubeController = ({ videoId }) => {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isSeeking, setIsSeeking] = useState(false);
   const [volume, setVolume] = useState(100);
+  const [isSeeking, setIsSeeking] = useState(false);
+
   useEffect(() => {
     if (!window.YT) {
       const tag = document.createElement("script");
       tag.src = "https://www.youtube.com/iframe_api";
       tag.async = true;
       document.body.appendChild(tag);
+
       tag.onload = () => {
         window.onYouTubeIframeAPIReady = initializePlayer;
       };
@@ -25,7 +28,7 @@ const YouTubeController = ({ videoId }) => {
     }
 
     function initializePlayer() {
-      if (playerRef.current) return;
+      if (playerRef.current) playerRef.current.destroy(); // Destroy existing player
 
       const newPlayer = new YT.Player("ytplayer", {
         videoId: videoId,
@@ -35,13 +38,16 @@ const YouTubeController = ({ videoId }) => {
           controls: 1,
         },
         events: {
-          onReady: (event) => {
+          onReady: () => {
             setPlayer(newPlayer);
             setDuration(newPlayer.getDuration());
             newPlayer.setVolume(volume);
           },
           onStateChange: (event) => {
             console.log("State changed:", event.data);
+          },
+          onError: (event) => {
+            console.error("Player error:", event.data);
           },
         },
       });
@@ -54,64 +60,39 @@ const YouTubeController = ({ videoId }) => {
         playerRef.current.destroy();
       }
     };
-  }, [videoId]);
+  }, [videoId]); // Reinitialize when videoId changes
 
   useEffect(() => {
-    // Update current time every second if the player is ready
     const updateTime = setInterval(() => {
       if (player && !isSeeking) {
         setCurrentTime(player.getCurrentTime());
       }
     }, 1000);
 
-    return () => {
-      clearInterval(updateTime);
-    };
+    return () => clearInterval(updateTime);
   }, [player, isSeeking]);
 
-  const handlePlay = () => {
-    if (player) {
-      player.playVideo();
-    }
-  };
-
-  const handlePause = () => {
-    if (player) {
-      player.pauseVideo();
-    }
-  };
-
-  const handleSkip = () => {
-    if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seekTo(currentTime + 10, true); // Skip 10 seconds
-    }
-  };
-  const handleReverse = () => {
-    if (player) {
-      const currentTime = player.getCurrentTime();
-      player.seekTo(currentTime - 10, true); // Skip 10 seconds
-    }
-  };
+  const handlePlay = () => player && player.playVideo();
+  const handlePause = () => player && player.pauseVideo();
+  const handleSkip = () =>
+    player && player.seekTo(player.getCurrentTime() + 10, true);
+  const handleReverse = () =>
+    player && player.seekTo(player.getCurrentTime() - 10, true);
 
   const handleSeekChange = (e) => {
-    const seekTo = e.target.value;
+    const seekTo = Number(e.target.value);
     if (player) {
-      setIsSeeking(true); // Start seeking
-      player.seekTo(seekTo, true); // Seek to the desired time
+      setIsSeeking(true);
+      player.seekTo(seekTo, true);
     }
   };
 
-  const handleSeekMouseUp = () => {
-    setIsSeeking(false); // Stop seeking
-  };
+  const handleSeekMouseUp = () => setIsSeeking(false);
 
   const handleVolumeChange = (e) => {
-    const newVolume = e.target.value;
+    const newVolume = Number(e.target.value);
     setVolume(newVolume);
-    if (player) {
-      player.setVolume(newVolume);
-    }
+    player && player.setVolume(newVolume);
   };
 
   return (
@@ -119,26 +100,22 @@ const YouTubeController = ({ videoId }) => {
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
       <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-700 w-full items-center justify-between">
-        <div className="details"></div>
         <div className="flex flex-col items-center justify-center">
           <div className="flex">
             <button
               onClick={handleReverse}
-              className=" px-4 py-2 rounded-md w-20"
+              className="px-4 py-2 rounded-md w-20"
             >
-              <img src={fr} alt="" />
+              <img src={fr} alt="Rewind" />
             </button>
-            <button onClick={handlePlay} className=" px-4 py-2 rounded-md w-20">
-              <img src={play} alt="" />
+            <button onClick={handlePlay} className="px-4 py-2 rounded-md w-20">
+              <img src={play} alt="Play" />
             </button>
-            <button
-              onClick={handlePause}
-              className=" px-4 py-2 rounded-md w-20"
-            >
-              <img src={pause} alt="" />
+            <button onClick={handlePause} className="px-4 py-2 rounded-md w-20">
+              <img src={pause} alt="Pause" />
             </button>
-            <button onClick={handleSkip} className=" px-4 py-2 rounded-md w-20">
-              <img src={ff} alt="" />
+            <button onClick={handleSkip} className="px-4 py-2 rounded-md w-20">
+              <img src={ff} alt="Fast Forward" />
             </button>
           </div>
           <div className="mt-4">
@@ -158,10 +135,9 @@ const YouTubeController = ({ videoId }) => {
           </div>
         </div>
 
-        {/* Volume control */}
         <div className="mt-4">
           <label className="block text-sm text-gray-300">
-            <img src={volume} alt="" />
+            <img src={volumeIcon} alt="Volume" />
           </label>
           <input
             type="range"
@@ -177,7 +153,6 @@ const YouTubeController = ({ videoId }) => {
   );
 };
 
-// Helper function to format time (seconds to MM:SS)
 const formatTime = (seconds) => {
   const minutes = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);

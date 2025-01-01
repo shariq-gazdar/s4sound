@@ -13,7 +13,7 @@ function Mainpage({ setUser }) {
   // console.log(allIds);
 
   return (
-    <div className="bg-neutral-900 w-3/4 h-screen p-5">
+    <div className="bg-neutral-900 w-3/4 h-screen p-5 rounded-l-3xl">
       <Nav
         setSearchTerm={setSearchTerm}
         setUser={setUser}

@@ -9,7 +9,7 @@ function SideBar() {
   };
 
   return (
-    <div className="w-full md:w-1/4 h-[95vh] bg-neutral-900 rounded-r-lg lg:border-r-2 border-green-900 pt-3 lg:pt-0">
+    <div className="w-full md:w-1/4   bg-neutral-900 rounded-r-3xl lg:border-r-2 border-green-900 pt-3 lg:pt-5">
       {/* Logo and Menu Button */}
       <div className="flex items-center lg:justify-between p-4 justify-left gap-x-10">
         <img src={Logo} alt="App Logo" className="lg:w-44 w-20" />
