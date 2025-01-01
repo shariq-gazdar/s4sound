@@ -3,6 +3,8 @@ import Search from "/Coding/Repos/s4sound/src/assets/search.svg";
 import { auth } from "/Coding/Repos/s4sound/src/config/firebase";
 import { signOut } from "firebase/auth";
 function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
+  // console.log(auth.currentUser);
+
   const apiUpdate = () => {
     setResult([]);
     if (searchTerm) {
@@ -45,7 +47,7 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
         <img
           src={auth.currentUser.photoURL}
           alt=""
-          className="w-10 rounded-full"
+          className=" w-10 h-10 rounded-full"
         />
         <h1 className="font-bold">{auth.currentUser.email}</h1>
         <button className="bg-green-600 p-2 rounded-lg" onClick={handleSignOut}>

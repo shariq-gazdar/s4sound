@@ -9,8 +9,8 @@ function Mainpage({ setUser }) {
   const [videoId, setVideoId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [allIds, setAllIds] = useState();
-  console.log(videoId);
+  const [allIds, setAllIds] = useState({});
+  // console.log(allIds);
 
   return (
     <div className="bg-neutral-900 w-3/4 h-screen p-5">
@@ -30,11 +30,12 @@ function Mainpage({ setUser }) {
         <CardsContainer
           searchTerm={searchTerm}
           result={result}
+          setAllIds={setAllIds}
           setVideoId={setVideoId}
         />
       )}
 
-      {videoId && <YouTubeController videoId={videoId} />}
+      {videoId && <YouTubeController videoId={videoId} allIds={allIds} />}
     </div>
   );
 }
