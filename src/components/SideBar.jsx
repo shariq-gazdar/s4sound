@@ -8,12 +8,12 @@ function SideBar() {
   };
 
   return (
-    <div className="w-full md:w-1/4 bg-neutral-900 rounded-r-3xl lg:border-r-4 border-green-600 pt-3 lg:pt-5">
+    <div className="w-full md:w-1/4 bg-neutral-900 rounded-r-3xl lg:border-r-4 border-green-600 pt-5">
       {/* Logo and Menu Button */}
-      <div className="flex items-center lg:justify-between p-4 justify-left gap-x-10">
+      <div className="flex items-center justify-between p-4">
         <img src={Logo} alt="App Logo" className="lg:w-44 w-20" />
         <button
-          className="md:hidden text-white text-2xl focus:outline-none"
+          className="md:hidden text-white text-3xl focus:outline-none"
           onClick={toggleMenu}
           aria-label="Toggle Menu"
         >
@@ -23,28 +23,40 @@ function SideBar() {
 
       {/* Sidebar Menu (Desktop and Mobile) */}
       <div
-        className={`p-5 flex flex-col gap-y-10 transition-all duration-300 ${
+        className={`p-5 flex flex-col gap-y-6 transition-all duration-300 ${
           isMenuOpen ? "block" : "hidden"
         } md:block`}
       >
-        <ul>
+        <ul className="space-y-6">
           <li>
-            <a href="#" className="text-neutral-100/50 hover:text-neutral-300">
+            <a
+              href="#"
+              className="text-neutral-100/70 hover:text-white transition-colors text-xl"
+            >
               Artist
             </a>
           </li>
           <li>
-            <a href="#" className="text-neutral-100/50 hover:text-neutral-300">
+            <a
+              href="#"
+              className="text-neutral-100/70 hover:text-white transition-colors text-xl"
+            >
               Tracks
             </a>
           </li>
           <li>
-            <a href="#" className="text-neutral-100/50 hover:text-neutral-300">
+            <a
+              href="#"
+              className="text-neutral-100/70 hover:text-white transition-colors text-xl"
+            >
               Albums
             </a>
           </li>
           <li>
-            <a href="#" className="text-neutral-100/50 hover:text-neutral-300">
+            <a
+              href="#"
+              className="text-neutral-100/70 hover:text-white transition-colors text-xl"
+            >
               Import
             </a>
           </li>
@@ -53,12 +65,12 @@ function SideBar() {
 
       {/* Responsive Dropdown Menu */}
       {isMenuOpen && (
-        <div className="md:hidden text-white p-4 space-y-4 bg-neutral-800 h-full">
-          <ul>
+        <div className="md:hidden bg-neutral-800 text-white p-4 space-y-6">
+          <ul className="space-y-6">
             <li>
               <a
                 href="#"
-                className="text-neutral-100/50 hover:text-neutral-300"
+                className="text-neutral-100/70 hover:text-white transition-colors text-xl"
               >
                 Artist
               </a>
@@ -66,7 +78,7 @@ function SideBar() {
             <li>
               <a
                 href="#"
-                className="text-neutral-100/50 hover:text-neutral-300"
+                className="text-neutral-100/70 hover:text-white transition-colors text-xl"
               >
                 Tracks
               </a>
@@ -74,7 +86,7 @@ function SideBar() {
             <li>
               <a
                 href="#"
-                className="text-neutral-100/50 hover:text-neutral-300"
+                className="text-neutral-100/70 hover:text-white transition-colors text-xl"
               >
                 Albums
               </a>
@@ -82,7 +94,7 @@ function SideBar() {
             <li>
               <a
                 href="#"
-                className="text-neutral-100/50 hover:text-neutral-300"
+                className="text-neutral-100/70 hover:text-white transition-colors text-xl"
               >
                 Import
               </a>
