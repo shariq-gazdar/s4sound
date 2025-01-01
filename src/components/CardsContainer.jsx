@@ -5,7 +5,9 @@ function CardsContainer({ searchTerm, result, setVideoId, setAllIds }) {
   const ids = [];
   const idObjects = {};
   if (!result || result.length === 0) {
-    return <div className="text-white ml-10">No results found</div>;
+    return (
+      <div className="text-white ml-10">Search For Your Favorite Songs</div>
+    );
   }
 
   return (

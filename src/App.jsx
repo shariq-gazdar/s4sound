@@ -7,6 +7,7 @@ import {
 import { auth } from "./config/firebase";
 import Homepage from "./components/Homepage";
 import SignUp from "./components/SignUp";
+import { Router } from "react-router-dom";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,12 +35,12 @@ function App() {
   }, []);
 
   return (
-    <div>
+    <div className="bg-neutral-900">
       {user ? (
         <Homepage setUser={setUser} />
       ) : (
         <div>
-          <SignUp setUser={setUser} />
+          <SignUp setUse r={setUser} />
         </div>
       )}
     </div>
