@@ -4,14 +4,16 @@ import pause from "./playerAssests/pause.png";
 import volumeIcon from "./playerAssests/volume.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
+import { info } from "autoprefixer";
 
-const YouTubeController = ({ videoId }) => {
+const YouTubeController = ({ videoId, info }) => {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(100);
+  const [volume, setVolume] = useState(50);
   const [isSeeking, setIsSeeking] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
   useEffect(() => {
     if (!window.YT) {
@@ -28,8 +30,7 @@ const YouTubeController = ({ videoId }) => {
     }
 
     function initializePlayer() {
-      if (playerRef.current) playerRef.current.destroy(); // Destroy existing player
-
+      if (playerRef.current) playerRef.current.destroy();
       const newPlayer = new YT.Player("ytplayer", {
         videoId: videoId,
         playerVars: {
@@ -60,7 +61,7 @@ const YouTubeController = ({ videoId }) => {
         playerRef.current.destroy();
       }
     };
-  }, [videoId]); // Reinitialize when videoId changes
+  }, [videoId]);
 
   useEffect(() => {
     const updateTime = setInterval(() => {
@@ -72,8 +73,18 @@ const YouTubeController = ({ videoId }) => {
     return () => clearInterval(updateTime);
   }, [player, isSeeking]);
 
-  const handlePlay = () => player && player.playVideo();
-  const handlePause = () => player && player.pauseVideo();
+  const handlePlay = () => {
+    if (player) {
+      player.playVideo();
+      setIsPlaying(!isPlaying);
+    }
+  };
+  const handlePause = () => {
+    if (player) {
+      player.pauseVideo();
+      setIsPlaying(!isPlaying);
+    }
+  };
   const handleSkip = () =>
     player && player.seekTo(player.getCurrentTime() + 10, true);
   const handleReverse = () =>
@@ -94,12 +105,42 @@ const YouTubeController = ({ videoId }) => {
     setVolume(newVolume);
     player && player.setVolume(newVolume);
   };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (
+        player &&
+        duration > 0 &&
+        Math.abs(player.getCurrentTime() - duration) < 1
+      ) {
+        handleAutoPlay();
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [player, duration]);
+
+  const handleAutoPlay = () => {
+    console.log("AutoPlay triggered!");
+  };
+  console.log(info);
 
   return (
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
       <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-700 w-full items-center justify-between">
+        <div className="info flex w-64  h-20 gap-x-3">
+          <img src={info.thumbnail} alt="" />
+          <div className="">
+            <marquee
+              className="font-bold w-72 h-5 overflow-hidden"
+              direction="right"
+            >
+              {info.title}
+            </marquee>
+            <p>{info.channelTitle}</p>
+          </div>
+        </div>
         <div className="flex flex-col items-center justify-center">
           <div className="flex">
             <button
@@ -108,12 +149,22 @@ const YouTubeController = ({ videoId }) => {
             >
               <img src={fr} alt="Rewind" />
             </button>
-            <button onClick={handlePlay} className="px-4 py-2 rounded-md w-20">
-              <img src={play} alt="Play" />
-            </button>
-            <button onClick={handlePause} className="px-4 py-2 rounded-md w-20">
-              <img src={pause} alt="Pause" />
-            </button>
+            {isPlaying ? (
+              <button
+                onClick={handlePause}
+                className="px-4 py-2 rounded-md w-20"
+              >
+                <img src={pause} alt="Pause" />
+              </button>
+            ) : (
+              <button
+                onClick={handlePlay}
+                className="px-4 py-2 rounded-md w-20"
+              >
+                <img src={play} alt="Play" />
+              </button>
+            )}
+
             <button onClick={handleSkip} className="px-4 py-2 rounded-md w-20">
               <img src={ff} alt="Fast Forward" />
             </button>
@@ -135,9 +186,9 @@ const YouTubeController = ({ videoId }) => {
           </div>
         </div>
 
-        <div className="mt-4">
+        <div className="mt-4 flex">
           <label className="block text-sm text-gray-300">
-            <img src={volumeIcon} alt="Volume" />
+            <img src={volumeIcon} alt="Volume" className="w-16" />
           </label>
           <input
             type="range"

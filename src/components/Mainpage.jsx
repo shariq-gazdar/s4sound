@@ -10,6 +10,7 @@ function Mainpage({ setUser }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [allIds, setAllIds] = useState({});
+  const [info, setInfo] = useState({});
   // console.log(allIds);
 
   return (
@@ -32,10 +33,13 @@ function Mainpage({ setUser }) {
           result={result}
           setAllIds={setAllIds}
           setVideoId={setVideoId}
+          setInfo={setInfo}
         />
       )}
 
-      {videoId && <YouTubeController videoId={videoId} allIds={allIds} />}
+      {videoId && (
+        <YouTubeController videoId={videoId} allIds={allIds} info={info} />
+      )}
     </div>
   );
 }
