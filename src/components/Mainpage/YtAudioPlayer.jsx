@@ -1,12 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import play from "./playerAssests/play.png";
 import pause from "./playerAssests/pause.png";
 import volumeIcon from "./playerAssests/volume.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
 import { info } from "autoprefixer";
-
-const YouTubeController = ({ videoId, info }) => {
+const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -44,9 +43,7 @@ const YouTubeController = ({ videoId, info }) => {
             setDuration(newPlayer.getDuration());
             newPlayer.setVolume(volume);
           },
-          onStateChange: (event) => {
-            console.log("State changed:", event.data);
-          },
+          onStateChange: handleStateChange, // Handle autoplay here
           onError: (event) => {
             console.error("Player error:", event.data);
           },
@@ -73,20 +70,29 @@ const YouTubeController = ({ videoId, info }) => {
     return () => clearInterval(updateTime);
   }, [player, isSeeking]);
 
+  const handleStateChange = (event) => {
+    if (event.data === YT.PlayerState.ENDED) {
+      handleAutoPlay();
+    }
+  };
+
   const handlePlay = () => {
     if (player) {
       player.playVideo();
-      setIsPlaying(!isPlaying);
+      setIsPlaying(true);
     }
   };
+
   const handlePause = () => {
     if (player) {
       player.pauseVideo();
-      setIsPlaying(!isPlaying);
+      setIsPlaying(false);
     }
   };
+
   const handleSkip = () =>
     player && player.seekTo(player.getCurrentTime() + 10, true);
+
   const handleReverse = () =>
     player && player.seekTo(player.getCurrentTime() - 10, true);
 
@@ -105,33 +111,38 @@ const YouTubeController = ({ videoId, info }) => {
     setVolume(newVolume);
     player && player.setVolume(newVolume);
   };
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (
-        player &&
-        duration > 0 &&
-        Math.abs(player.getCurrentTime() - duration) < 1
-      ) {
-        handleAutoPlay();
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [player, duration]);
 
   const handleAutoPlay = () => {
-    console.log("AutoPlay triggered!");
+    if (!allIds || allIds.length === 0) {
+      console.error("No video IDs available for autoplay.");
+      return;
+    }
+
+    const currentIndex = allIds.indexOf(videoId);
+    if (currentIndex === -1) {
+      console.error("Current videoId not found in allIds.");
+      return;
+    }
+
+    // Get the next video index (wrap around to the start if it's the last video)
+    const nextIndex = (currentIndex + 1) % allIds.length;
+    const nextVideoId = allIds[nextIndex];
+    console.log(allIds);
+
+    console.log("Autoplaying next video:", nextVideoId);
+
+    // Update the videoId to the next video
+    setVideoId(nextVideoId);
   };
-  console.log(info);
 
   return (
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
       <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-700 w-full items-center justify-between">
-        <div className="info flex w-64  h-20 gap-x-3">
+        <div className="info flex w-64 h-20 gap-x-3">
           <img src={info.thumbnail} alt="" />
-          <div className="">
+          <div>
             <marquee
               className="font-bold w-72 h-5 overflow-hidden"
               direction="right"
@@ -164,7 +175,6 @@ const YouTubeController = ({ videoId, info }) => {
                 <img src={play} alt="Play" />
               </button>
             )}
-
             <button onClick={handleSkip} className="px-4 py-2 rounded-md w-20">
               <img src={ff} alt="Fast Forward" />
             </button>
@@ -185,7 +195,6 @@ const YouTubeController = ({ videoId, info }) => {
             </div>
           </div>
         </div>
-
         <div className="mt-4 flex">
           <label className="block text-sm text-gray-300">
             <img src={volumeIcon} alt="Volume" className="w-16" />
