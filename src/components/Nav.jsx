@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Search from "./playerAssests/search.svg";
-import { auth } from "/Coding/Repos/s4sound/src/config/firebase";
+import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
   // console.log(auth.currentUser);

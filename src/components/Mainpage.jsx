@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Nav from "./Mainpage/Nav";
+import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
-import YouTubeController from "./Mainpage/YtAudioPlayer";
+import YouTubeController from "./YtAudioPlayer";
 
 function Mainpage({ setUser }) {
   const [searchTerm, setSearchTerm] = useState("");
