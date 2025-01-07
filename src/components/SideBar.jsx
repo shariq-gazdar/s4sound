@@ -8,10 +8,10 @@ function SideBar() {
   };
 
   return (
-    <div className="w-full md:w-1/4 bg-neutral-900 rounded-r-3xl lg:border-r-4 border-green-600 pt-5">
+    <div className="w-full md:w-1/4 bg-neutral-900 rounded-r-3xl lg:border-r-4   pt-5 border-green-600 ">
       {/* Logo and Menu Button */}
       <div className="flex items-center justify-between p-4">
-        <img src={Logo} alt="App Logo" className="lg:w-44 w-20" />
+        <img src={Logo} alt="App Logo" className="lg:w-44 w-20 " />
         <button
           className="md:hidden text-white text-3xl focus:outline-none"
           onClick={toggleMenu}
@@ -23,9 +23,9 @@ function SideBar() {
 
       {/* Sidebar Menu (Desktop and Mobile) */}
       <div
-        className={`p-5 flex flex-col gap-y-6 transition-all duration-300 ${
+        className={`p-5 flex flex-col gap-y-6 transition-all duration-300  ${
           isMenuOpen ? "block" : "hidden"
-        } md:block`}
+        } md:block hidden`}
       >
         <ul className="space-y-6">
           <li>
@@ -65,7 +65,7 @@ function SideBar() {
 
       {/* Responsive Dropdown Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-neutral-800 text-white p-4 space-y-6">
+        <div className="md:hidden flex flex-col  text-white p-5 space-y-6 gap-y-6">
           <ul className="space-y-6">
             <li>
               <a
