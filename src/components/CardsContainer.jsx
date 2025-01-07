@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import "../components/MainStyle.css";
+import "../components/mainStyle.css";
 
 function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
   let ids = [];
