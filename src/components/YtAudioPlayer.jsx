@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import play from "./playerAssests/play.png";
 import pause from "./playerAssests/pause.png";
 import volumeIcon from "./playerAssests/volume.png";
+import volumeMute from "./playerAssests/volume_off.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
 import { info } from "autoprefixer";
@@ -14,6 +15,8 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
   const [volume, setVolume] = useState(50);
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [previousVol, setPreviousVol] = useState(50);
+  const [mute, setMute] = useState(false);
 
   useEffect(() => {
     if (!window.YT) {
@@ -112,6 +115,21 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
     setVolume(newVolume);
     player && player.setVolume(newVolume);
   };
+  const handleMute = () => {
+    if (player) {
+      if (!mute) {
+        // Save current volume before muting
+        setPreviousVol(volume);
+        player.setVolume(0);
+        setVolume(0);
+      } else {
+        // Restore the previous volume when unmuting
+        player.setVolume(previousVol);
+        setVolume(previousVol);
+      }
+    }
+    setMute(!mute); // Toggle mute state
+  };
 
   const handleAutoPlay = () => {
     if (!allIds || allIds.length === 0) {
@@ -140,7 +158,7 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
-      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800  w-full items-center justify-between rounded-t-2xl">
+      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800  w-full items-center justify-between rounded-t-2xl h-28">
         <div className="info flex w-64 h-20 gap-x-3">
           <img src={info.thumbnail} alt="" />
           <div>
@@ -155,32 +173,23 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
         </div>
         <div className="flex flex-col items-center justify-center">
           <div className="flex">
-            <button
-              onClick={handleReverse}
-              className="px-4 py-2 rounded-md w-20"
-            >
+            <button onClick={handleReverse} className="px-4  rounded-md w-20">
               <img src={fr} alt="Rewind" />
             </button>
             {isPlaying ? (
-              <button
-                onClick={handlePause}
-                className="px-4 py-2 rounded-md w-20"
-              >
+              <button onClick={handlePause} className="px-4  rounded-md w-20">
                 <img src={pause} alt="Pause" />
               </button>
             ) : (
-              <button
-                onClick={handlePlay}
-                className="px-4 py-2 rounded-md w-20"
-              >
+              <button onClick={handlePlay} className="px-4  rounded-md w-20">
                 <img src={play} alt="Play" />
               </button>
             )}
-            <button onClick={handleSkip} className="px-4 py-2 rounded-md w-20">
+            <button onClick={handleSkip} className="px-4  rounded-md w-20">
               <img src={ff} alt="Fast Forward" />
             </button>
           </div>
-          <div className="mt-4">
+          <div>
             <input
               type="range"
               min="0"
@@ -188,7 +197,7 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
               value={currentTime}
               onChange={handleSeekChange}
               onMouseUp={handleSeekMouseUp}
-              className="w-[25vw]"
+              className="w-[25vw] "
             />
             <div className="flex justify-between text-sm text-gray-300">
               <span>{formatTime(currentTime)}</span>
@@ -196,9 +205,23 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
             </div>
           </div>
         </div>
-        <div className="mt-4 flex justify-center items-center w-72">
+        <div className="mt-4 flex justify-center items-center w-72 gap-x-3">
           <label className="block text-sm text-gray-300">
-            <img src={volumeIcon} alt="Volume" className="w-16" />
+            {mute ? (
+              <img
+                src={volumeMute}
+                alt="Volume"
+                className="w-10"
+                onClick={handleMute}
+              />
+            ) : (
+              <img
+                src={volumeIcon}
+                alt="Volume"
+                className="w-10"
+                onClick={handleMute}
+              />
+            )}
           </label>
           <input
             type="range"
@@ -206,7 +229,7 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
             max="100"
             value={volume}
             onChange={handleVolumeChange}
-            className="w-full"
+            className="w-40"
           />
         </div>
       </div>

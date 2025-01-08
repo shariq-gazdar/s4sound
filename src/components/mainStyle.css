@@ -14,7 +14,6 @@
   margin-left: 25px;
 }
 input[type="range"] {
-  width: 300px;
   accent-color: #86dda4;
   height: 5px;
 }
