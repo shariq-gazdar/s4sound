@@ -50,7 +50,10 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
           className=" w-10 h-10 rounded-full"
         />
         <h1 className="font-bold">{auth.currentUser.email}</h1>
-        <button className="bg-green-600 p-2 rounded-lg" onClick={handleSignOut}>
+        <button
+          className="bg-green-600 p-2 ml-10 rounded-lg"
+          onClick={handleSignOut}
+        >
           SignOut
         </button>
       </div>

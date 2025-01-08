@@ -19,7 +19,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
         return (
           <div
             key={r.id.videoId}
-            className="bg-neutral-800 p-4 rounded-lg flex h-fit items-center gap-y-5 gap-x-2"
+            className="bg-neutral-700/85 p-4 rounded-lg flex h-fit items-center gap-y-5 gap-x-2 hover:bg-neutral-700 cursor-pointer"
             onClick={() => {
               setVideoId(r.id.videoId);
               setAllIds(ids);

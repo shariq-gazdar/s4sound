@@ -5,6 +5,7 @@ import volumeIcon from "./playerAssests/volume.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
 import { info } from "autoprefixer";
+import "./mainStyle.css";
 const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
@@ -139,7 +140,7 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
-      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-700 w-full items-center justify-between">
+      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800  w-full items-center justify-between rounded-t-2xl">
         <div className="info flex w-64 h-20 gap-x-3">
           <img src={info.thumbnail} alt="" />
           <div>
@@ -195,7 +196,7 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
             </div>
           </div>
         </div>
-        <div className="mt-4 flex">
+        <div className="mt-4 flex justify-center items-center w-72">
           <label className="block text-sm text-gray-300">
             <img src={volumeIcon} alt="Volume" className="w-16" />
           </label>
