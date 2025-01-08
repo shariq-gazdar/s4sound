@@ -1,10 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Search from "./playerAssests/search.svg";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
   // console.log(auth.currentUser);
-
+  const [userName, setUserName] = useState("");
+  useEffect(() => {
+    if (auth.currentUser) {
+      setUserName(auth.currentUser.email);
+      setUserName(userName.split("@")[0]);
+    }
+  });
   const apiUpdate = () => {
     setResult([]);
     if (searchTerm) {
@@ -20,9 +26,15 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
       alert("Please Enter A Song Name");
     }
   };
+
   const handleSignOut = () => {
     signOut(auth);
     setUser(false);
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") {
+      apiUpdate();
+    }
   };
 
   return (
@@ -34,6 +46,9 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
           placeholder="Search"
           onChange={(e) => {
             setSearchTerm(e.target.value);
+          }}
+          onKeyDown={(e) => {
+            handleKeyDown(e);
           }}
         />
         <img
@@ -49,7 +64,7 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
           alt=""
           className=" w-10 h-10 rounded-full"
         />
-        <h1 className="font-bold">{auth.currentUser.email}</h1>
+        <h1 className="font-bold">{userName}</h1>
         <button
           className="bg-green-600 p-2 ml-10 rounded-lg"
           onClick={handleSignOut}

@@ -10,8 +10,8 @@ function Mainpage({ setUser }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [allIds, setAllIds] = useState([]);
-  const [info, setInfo] = useState({});
-  // console.log(allIds);
+  const [info, setInfo] = useState(null);
+  console.log(info);
 
   return (
     <div className="bg-neutral-900 w-3/4 h-screen p-5 rounded-l-3xl">
@@ -41,7 +41,6 @@ function Mainpage({ setUser }) {
         <YouTubeController
           videoId={videoId}
           allIds={allIds}
-          info={info}
           setVideoId={setVideoId}
         />
       )}

@@ -7,7 +7,7 @@ import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
 import { info } from "autoprefixer";
 import "./mainStyle.css";
-const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
+const YouTubeController = ({ videoId, setVideoId, allIds }) => {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -160,15 +160,15 @@ const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
 
       <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800  w-full items-center justify-between rounded-t-2xl h-28">
         <div className="info flex w-64 h-20 gap-x-3">
-          <img src={info.thumbnail} alt="" />
+          <img src="" alt="" />
           <div>
             <marquee
               className="font-bold w-72 h-5 overflow-hidden"
               direction="right"
             >
-              {info.title}
+              Title
             </marquee>
-            <p>{info.channelTitle}</p>
+            <p>Description</p>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center">
