@@ -3,7 +3,7 @@ import "../components/mainStyle.css";
 
 function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
   let infoArr = [];
-  let info = {};
+  let infoLocal = {};
   let id = "";
   if (!result || result.length === 0) {
     return (
@@ -12,13 +12,13 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
   }
 
   return (
-    <div className="text-white flex flex-col gap-y-2 pt-36 h-[60vh] justify-center w-fit ml-10 overflow-auto">
+    <div className="text-white flex flex-col gap-y-2 h-fit  justify-center w-fit ml-10 overflow-auto">
       {result.map((r) => {
         const { title, thumbnails, channelTitle } = r.snippet;
         id = r.id.videoId;
-        info = { id: [title, thumbnails, channelTitle] };
-        infoArr.push(info);
-        console.log(infoArr);
+        infoLocal = { id: [title, thumbnails, channelTitle] };
+        infoArr.push(infoLocal);
+        // console.log(infoArr);
 
         return (
           <div
@@ -41,5 +41,4 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
     </div>
   );
 }
-
 export default CardsContainer;

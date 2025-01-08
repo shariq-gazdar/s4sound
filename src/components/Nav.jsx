@@ -7,8 +7,9 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
   const [userName, setUserName] = useState("");
   useEffect(() => {
     if (auth.currentUser) {
-      setUserName(auth.currentUser.email);
-      setUserName(userName.split("@")[0]);
+      setUserName(auth.currentUser.email.split("@")[0]);
+    } else {
+      setUserName("Guest");
     }
   });
   const apiUpdate = () => {

@@ -34,6 +34,7 @@ function Mainpage({ setUser }) {
           setAllIds={setAllIds}
           setVideoId={setVideoId}
           setInfo={setInfo}
+          info={info}
         />
       )}
 
