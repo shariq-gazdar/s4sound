@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import "../components/mainStyle.css";
 
+<<<<<<< HEAD
 function CardsContainer({ result, setVideoId, setInfo }) {
   useEffect(() => {
     // Construct an array of objects containing info for all songs
@@ -18,6 +19,12 @@ function CardsContainer({ result, setVideoId, setInfo }) {
     setInfo(allInfo);
   }, [result, setInfo]);
 
+=======
+function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
+  let infoArr = [];
+  let infoLocal = {};
+  let id = "";
+>>>>>>> bb41abaeec437338d8ce5109953d0f6b4b155c8b
   if (!result || result.length === 0) {
     return (
       <div className="text-white ml-10">Search for your favorite songs</div>
@@ -25,9 +32,19 @@ function CardsContainer({ result, setVideoId, setInfo }) {
   }
 
   return (
+<<<<<<< HEAD
     <div className="text-white flex flex-col gap-y-2 pt-40 h-[60vh] justify-center w-fit ml-10 overflow-auto">
       {result.map((r) => {
         const { title, thumbnails, channelTitle } = r.snippet;
+=======
+    <div className="text-white flex flex-col gap-y-2 h-fit  justify-center w-fit ml-10 overflow-auto">
+      {result.map((r) => {
+        const { title, thumbnails, channelTitle } = r.snippet;
+        id = r.id.videoId;
+        infoLocal = { id: [title, thumbnails, channelTitle] };
+        infoArr.push(infoLocal);
+        // console.log(infoArr);
+>>>>>>> bb41abaeec437338d8ce5109953d0f6b4b155c8b
 
         return (
           <div
@@ -48,5 +65,4 @@ function CardsContainer({ result, setVideoId, setInfo }) {
     </div>
   );
 }
-
 export default CardsContainer;
