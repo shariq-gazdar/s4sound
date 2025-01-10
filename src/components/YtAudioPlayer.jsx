@@ -2,12 +2,11 @@ import { useEffect, useState, useRef } from "react";
 import play from "./playerAssests/play.png";
 import pause from "./playerAssests/pause.png";
 import volumeIcon from "./playerAssests/volume.png";
-import volumeMute from "./playerAssests/volume_off.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
 import { info } from "autoprefixer";
 import "./mainStyle.css";
-const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
+const YouTubeController = ({ videoId, info, setVideoId, allIds }) => {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -17,9 +16,6 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [previousVol, setPreviousVol] = useState(50);
   const [mute, setMute] = useState(false);
-  const [title, setTitle] = useState("");
-  const [chanelName, setChanelName] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
 
   useEffect(() => {
     if (!window.YT) {
@@ -124,11 +120,9 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
         // Save current volume before muting
         setPreviousVol(volume);
         player.setVolume(0);
-        setVolume(0);
       } else {
         // Restore the previous volume when unmuting
         player.setVolume(previousVol);
-        setVolume(previousVol);
       }
     }
     setMute(!mute); // Toggle mute state
@@ -155,58 +149,53 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
 
     // Update the videoId to the next video
     setVideoId(nextVideoId);
-    handleInfo(info);
   };
-  const handleInfo = (info) => {
-    // console.log(info);
-    info.forEach((i) => {
-      if (videoId == i.id) {
-        console.log(i);
-        setChanelName(i.channelTitle);
-        setThumbnail(i.thumbnail);
-        setTitle(i.title);
-      }
-    });
-  };
-  useEffect(() => {
-    handleInfo(info);
-  });
+
   return (
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
-      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800  w-full items-center justify-between rounded-t-2xl h-28">
+      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800  w-full items-center justify-between rounded-t-2xl">
         <div className="info flex w-64 h-20 gap-x-3">
-          <img src={thumbnail} alt="" />
+          <img src={info.thumbnail} alt="" />
           <div>
             <marquee
               className="font-bold w-72 h-5 overflow-hidden"
               direction="right"
             >
-              {title}
+              {info.title}
             </marquee>
-            <p>{chanelName}</p>
+            <p>{info.channelTitle}</p>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center">
           <div className="flex">
-            <button onClick={handleReverse} className="px-4  rounded-md w-20">
+            <button
+              onClick={handleReverse}
+              className="px-4 py-2 rounded-md w-20"
+            >
               <img src={fr} alt="Rewind" />
             </button>
             {isPlaying ? (
-              <button onClick={handlePause} className="px-4  rounded-md w-20">
+              <button
+                onClick={handlePause}
+                className="px-4 py-2 rounded-md w-20"
+              >
                 <img src={pause} alt="Pause" />
               </button>
             ) : (
-              <button onClick={handlePlay} className="px-4  rounded-md w-20">
+              <button
+                onClick={handlePlay}
+                className="px-4 py-2 rounded-md w-20"
+              >
                 <img src={play} alt="Play" />
               </button>
             )}
-            <button onClick={handleSkip} className="px-4  rounded-md w-20">
+            <button onClick={handleSkip} className="px-4 py-2 rounded-md w-20">
               <img src={ff} alt="Fast Forward" />
             </button>
           </div>
-          <div>
+          <div className="mt-4">
             <input
               type="range"
               min="0"
@@ -214,7 +203,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
               value={currentTime}
               onChange={handleSeekChange}
               onMouseUp={handleSeekMouseUp}
-              className="w-[25vw] "
+              className="w-[25vw]"
             />
             <div className="flex justify-between text-sm text-gray-300">
               <span>{formatTime(currentTime)}</span>
@@ -222,23 +211,14 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
             </div>
           </div>
         </div>
-        <div className="mt-4 flex justify-center items-center w-72 gap-x-3">
+        <div className="mt-4 flex justify-center items-center w-72">
           <label className="block text-sm text-gray-300">
-            {mute ? (
-              <img
-                src={volumeMute}
-                alt="Volume"
-                className="w-10"
-                onClick={handleMute}
-              />
-            ) : (
-              <img
-                src={volumeIcon}
-                alt="Volume"
-                className="w-10"
-                onClick={handleMute}
-              />
-            )}
+            <img
+              src={volumeIcon}
+              alt="Volume"
+              className="w-16"
+              onClick={handleMute}
+            />
           </label>
           <input
             type="range"
@@ -246,7 +226,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
             max="100"
             value={volume}
             onChange={handleVolumeChange}
-            className="w-40"
+            className="w-full"
           />
         </div>
       </div>

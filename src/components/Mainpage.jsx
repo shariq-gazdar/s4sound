@@ -18,6 +18,7 @@ function Mainpage({ setUser }) {
       console.log("Info is null");
     }
   }, [info]);
+  console.log(allIds);
 
   return (
     <div className="bg-neutral-900 w-3/4 h-screen p-5 rounded-l-3xl">

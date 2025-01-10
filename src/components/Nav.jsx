@@ -8,11 +8,6 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
   useEffect(() => {
     if (auth.currentUser) {
       setUserName(auth.currentUser.email.split("@")[0]);
-<<<<<<< HEAD
-=======
-    } else {
-      setUserName("Guest");
->>>>>>> bb41abaeec437338d8ce5109953d0f6b4b155c8b
     }
   });
   const apiUpdate = () => {
