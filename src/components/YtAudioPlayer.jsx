@@ -7,7 +7,7 @@ import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
 import { info } from "autoprefixer";
 import "./mainStyle.css";
-const YouTubeController = ({ videoId, setVideoId, allIds }) => {
+const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -17,6 +17,9 @@ const YouTubeController = ({ videoId, setVideoId, allIds }) => {
   const [isPlaying, setIsPlaying] = useState(true);
   const [previousVol, setPreviousVol] = useState(50);
   const [mute, setMute] = useState(false);
+  const [title, setTitle] = useState("");
+  const [chanelName, setChanelName] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
 
   useEffect(() => {
     if (!window.YT) {
@@ -152,23 +155,37 @@ const YouTubeController = ({ videoId, setVideoId, allIds }) => {
 
     // Update the videoId to the next video
     setVideoId(nextVideoId);
+    handleInfo(info);
   };
-
+  const handleInfo = (info) => {
+    // console.log(info);
+    info.forEach((i) => {
+      if (videoId == i.id) {
+        console.log(i);
+        setChanelName(i.channelTitle);
+        setThumbnail(i.thumbnail);
+        setTitle(i.title);
+      }
+    });
+  };
+  useEffect(() => {
+    handleInfo(info);
+  });
   return (
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
       <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800  w-full items-center justify-between rounded-t-2xl h-28">
         <div className="info flex w-64 h-20 gap-x-3">
-          <img src="" alt="" />
+          <img src={thumbnail} alt="" />
           <div>
             <marquee
               className="font-bold w-72 h-5 overflow-hidden"
               direction="right"
             >
-              Title
+              {title}
             </marquee>
-            <p>Description</p>
+            <p>{chanelName}</p>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center">

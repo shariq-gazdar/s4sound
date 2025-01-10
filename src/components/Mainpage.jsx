@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
 import YouTubeController from "./YtAudioPlayer";
@@ -10,8 +10,14 @@ function Mainpage({ setUser }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [allIds, setAllIds] = useState([]);
-  const [info, setInfo] = useState(null);
-  console.log(info);
+  const [info, setInfo] = useState([]);
+  useEffect(() => {
+    if (info) {
+      console.log(info);
+    } else {
+      console.log("Info is null");
+    }
+  }, [info]);
 
   return (
     <div className="bg-neutral-900 w-3/4 h-screen p-5 rounded-l-3xl">
@@ -42,6 +48,7 @@ function Mainpage({ setUser }) {
           videoId={videoId}
           allIds={allIds}
           setVideoId={setVideoId}
+          info={info}
         />
       )}
     </div>
