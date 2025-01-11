@@ -3,7 +3,7 @@ import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import googleImage from "../assets/google.png";
 import { googleAuthProvider, auth } from "../config/firebase";
 
-function SignUp({ setUser }) {
+function SignUp({ setUser, setCount }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -23,6 +23,7 @@ function SignUp({ setUser }) {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       setUser(true);
+      setCount(1);
     } catch (error) {
       setErrorMessage(
         error.message || "Something went wrong. Please try again."

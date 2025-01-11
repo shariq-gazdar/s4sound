@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Search from "./playerAssests/search.svg";
+import dummy from "../assets/google.png";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
   // console.log(auth.currentUser);
   const [userName, setUserName] = useState("");
+  const [url, setUrl] = useState(`${dummy}`);
   useEffect(() => {
     if (auth.currentUser) {
       setUserName(auth.currentUser.email.split("@")[0]);
+      setUrl(auth.currentUser.photoURL);
     }
   });
   const apiUpdate = () => {
@@ -58,11 +61,7 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
         />
       </div>
       <div className="flex gap-x-3 items-center">
-        <img
-          src={auth.currentUser.photoURL}
-          alt=""
-          className=" w-10 h-10 rounded-full"
-        />
+        <img src={url} alt="" className=" w-10 h-10 rounded-full" />
         <h1 className="font-bold">{userName}</h1>
         <button
           className="bg-green-600 p-2 ml-10 rounded-lg"

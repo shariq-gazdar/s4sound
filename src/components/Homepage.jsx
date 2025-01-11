@@ -8,15 +8,10 @@ import YouTubeAudioPlayer from "./YtAudioPlayer";
 
 function Homepage({ setUser }) {
   return (
-    <BrowserRouter>
-      <div className="flex">
-        <SideBar />
-        <Mainpage setUser={setUser} />
-        <Routes>
-          <Route path="/favorites" element={<Favorites />} />
-        </Routes>
-      </div>
-    </BrowserRouter>
+    <div className="flex">
+      <SideBar />
+      <Mainpage setUser={setUser} />
+    </div>
   );
 }
 

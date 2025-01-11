@@ -178,10 +178,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
         <div className="info flex w-64 h-20 gap-x-3">
           <img src={thumbnail} alt="Thumbnail" />
           <div>
-            <marquee
-              className="font-bold w-fit max-w-72 h-5 overflow-hidden"
-              direction="left"
-            >
+            <marquee className="font-bold w-fit  h-5 " direction="right">
               {title}
             </marquee>
             <p>{channelName}</p>

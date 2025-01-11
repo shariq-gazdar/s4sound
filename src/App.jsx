@@ -7,10 +7,13 @@ import {
 import { auth } from "./config/firebase";
 import Homepage from "./components/Homepage";
 import SignUp from "./components/SignUp";
-import { Router } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import Favorites from "./components/Favorites";
 
 function App() {
   const [user, setUser] = useState(null);
+  const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Set persistence explicitly
@@ -23,26 +26,41 @@ function App() {
       });
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      // console.log("Auth state changed:", currentUser);
-      if (currentUser) {
-        setUser(currentUser);
-      } else {
-        setUser(null);
-      }
+      setUser(currentUser); // Update user state
     });
 
     return () => unsubscribe();
   }, []);
 
+  // Navigate based on authentication state when `user` changes
+  useEffect(() => {
+    if (user === null) {
+      navigate("/signup"); // Redirect unauthenticated users to sign-up
+    } else if (user && count == 1) {
+      navigate("/"); // Redirect authenticated users to homepage
+    }
+  }, [user, navigate]);
+
   return (
     <div className="bg-neutral-900">
-      {user ? (
-        <Homepage setUser={setUser} />
-      ) : (
-        <div>
-          <SignUp setUse r={setUser} />
-        </div>
-      )}
+      <Routes>
+        {user ? (
+          <>
+            {/* Authenticated routes */}
+            <Route path="/" element={<Homepage setUser={setUser} />} />
+            <Route path="/favorites" element={<Favorites />} />
+          </>
+        ) : (
+          <>
+            {/* Unauthenticated route */}
+            <Route
+              path="/signup"
+              element={<SignUp setUser={setUser} setCount={setCount} />}
+            />
+          </>
+        )}
+        <Route path="*" element={<Homepage />} />
+      </Routes>
     </div>
   );
 }
