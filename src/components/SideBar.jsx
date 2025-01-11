@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Logo from "../assets/Logo.png";
+import { Link } from "react-router-dom";
 
 function SideBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -29,35 +30,19 @@ function SideBar() {
       >
         <ul className="space-y-6">
           <li>
-            <a
-              href="#"
+            <Link
+              to="/favorites"
               className="text-neutral-100/70 hover:text-white transition-colors text-xl"
             >
-              Artist
-            </a>
+              Favorites
+            </Link>
           </li>
           <li>
             <a
               href="#"
               className="text-neutral-100/70 hover:text-white transition-colors text-xl"
             >
-              Tracks
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="text-neutral-100/70 hover:text-white transition-colors text-xl"
-            >
-              Albums
-            </a>
-          </li>
-          <li>
-            <a
-              href="#"
-              className="text-neutral-100/70 hover:text-white transition-colors text-xl"
-            >
-              Import
+              Playlists
             </a>
           </li>
         </ul>
@@ -72,7 +57,7 @@ function SideBar() {
                 href="#"
                 className="text-neutral-100/70 hover:text-white transition-colors text-xl"
               >
-                Artist
+                Favorites
               </a>
             </li>
             <li>
@@ -80,23 +65,7 @@ function SideBar() {
                 href="#"
                 className="text-neutral-100/70 hover:text-white transition-colors text-xl"
               >
-                Tracks
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="text-neutral-100/70 hover:text-white transition-colors text-xl"
-              >
-                Albums
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
-                className="text-neutral-100/70 hover:text-white transition-colors text-xl"
-              >
-                Import
+                Playlists
               </a>
             </li>
           </ul>

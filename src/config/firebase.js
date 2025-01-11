@@ -6,6 +6,7 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC_2C3FG9G3Sj1-HwEGd3FTZMl0HYBdYRg",
@@ -29,3 +30,4 @@ setPersistence(auth, browserLocalPersistence)
     console.error("Error setting persistence:", error);
   });
 export const googleAuthProvider = new GoogleAuthProvider();
+export const db = getFirestore(app);

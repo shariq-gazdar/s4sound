@@ -8,30 +8,33 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
     );
   }
 
-  const handleCardClick = (videoId, infoArr) => {
+  const handleCardClick = (videoId) => {
     setVideoId(videoId); // Set the selected video ID
     setAllIds(result.map((r) => r.id.videoId)); // Set all video IDs
+
+    // Prepare the info array and set it
+    const infoArr = result.map((r) => {
+      const { title, thumbnails, channelTitle } = r.snippet;
+      return {
+        id: r.id.videoId,
+        title: title,
+        thumbnail: thumbnails.default.url,
+        channelTitle: channelTitle,
+      };
+    });
     setInfo(infoArr); // Set full info array
   };
 
-  const infoArr = result.map((r) => {
-    const { title, thumbnails, channelTitle } = r.snippet;
-    return {
-      id: r.id.videoId,
-      details: [title, thumbnails, channelTitle],
-    };
-  });
-
   return (
-    <div className="text-white flex flex-col gap-y-2 pt-36 h-[60vh] justify-center w-fit ml-10 overflow-auto">
-      {result.map((r, index) => {
+    <div className="text-white flex flex-col gap-y-2  h-[65vh] justify-center w-fit ml-10 overflow-scroll pt-36">
+      {result.map((r) => {
         const { title, thumbnails, channelTitle } = r.snippet;
 
         return (
           <div
             key={r.id.videoId}
             className="bg-neutral-700/85 p-4 rounded-lg flex h-fit items-center gap-y-5 gap-x-2 hover:bg-neutral-700 cursor-pointer w-full pr-20"
-            onClick={() => handleCardClick(r.id.videoId, infoArr)}
+            onClick={() => handleCardClick(r.id.videoId)}
           >
             <img src={thumbnails.default.url} alt={title} className="w-20" />
             <div>
