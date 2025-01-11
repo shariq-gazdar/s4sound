@@ -47,7 +47,10 @@ function App() {
         {user ? (
           <>
             {/* Authenticated routes */}
-            <Route path="/" element={<Homepage setUser={setUser} />} />
+            <Route
+              path="/"
+              element={<Homepage setUser={setUser} setCount={setCount} />}
+            />
             <Route path="/favorites" element={<Favorites />} />
           </>
         ) : (

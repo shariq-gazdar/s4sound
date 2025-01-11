@@ -3,7 +3,7 @@ import Search from "./playerAssests/search.svg";
 import dummy from "../assets/google.png";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
-function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
+function Nav({ setSearchTerm, setUser, setResult, searchTerm, setCount }) {
   // console.log(auth.currentUser);
   const [userName, setUserName] = useState("");
   const [url, setUrl] = useState(`${dummy}`);
@@ -32,6 +32,7 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm }) {
   const handleSignOut = () => {
     signOut(auth);
     setUser(false);
+    setCount(0);
   };
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {

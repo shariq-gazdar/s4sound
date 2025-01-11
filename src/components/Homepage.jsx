@@ -6,11 +6,11 @@ import Favorites from "./Favorites";
 // import Player from "./Mainpage/Player";
 import YouTubeAudioPlayer from "./YtAudioPlayer";
 
-function Homepage({ setUser }) {
+function Homepage({ setUser, setCount }) {
   return (
     <div className="flex">
       <SideBar />
-      <Mainpage setUser={setUser} />
+      <Mainpage setUser={setUser} setCount={setCount} />
     </div>
   );
 }

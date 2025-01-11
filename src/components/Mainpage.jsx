@@ -3,7 +3,7 @@ import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
 import YouTubeController from "./YtAudioPlayer";
 
-function Mainpage({ setUser }) {
+function Mainpage({ setUser, setCount }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState([]);
   const [videoId, setVideoId] = useState("");
@@ -11,14 +11,14 @@ function Mainpage({ setUser }) {
   const [error, setError] = useState(null);
   const [allIds, setAllIds] = useState([]);
   const [info, setInfo] = useState([]);
-  useEffect(() => {
-    if (info) {
-      console.log(info);
-    } else {
-      console.log("Info is null");
-    }
-  }, [info]);
-  console.log(allIds);
+  // useEffect(() => {
+  //   if (info) {
+  //     console.log(info);
+  //   } else {
+  //     console.log("Info is null");
+  //   }
+  // }, [info]);
+  // console.log(allIds);
 
   return (
     <div className="bg-neutral-900 w-3/4 h-screen p-5 rounded-l-3xl">
@@ -29,6 +29,7 @@ function Mainpage({ setUser }) {
         setLoading={setLoading}
         setError={setError}
         searchTerm={searchTerm}
+        setCount={setCount}
       />
 
       {error && <div className="text-red-500 text-center">{error}</div>}
