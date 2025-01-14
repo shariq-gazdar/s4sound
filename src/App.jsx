@@ -4,11 +4,13 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-import { auth } from "./config/firebase";
+import { auth, db } from "./config/firebase";
 import Homepage from "./components/Homepage";
 import SignUp from "./components/SignUp";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Favorites from "./components/Favorites";
+import { getDocs, doc, collection } from "firebase/firestore";
+import DbContextProvider from "./context/dbContextProvider";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -42,29 +44,31 @@ function App() {
   }, [user, navigate]);
 
   return (
-    <div className="bg-neutral-900">
-      <Routes>
-        {user ? (
-          <>
-            {/* Authenticated routes */}
-            <Route
-              path="/"
-              element={<Homepage setUser={setUser} setCount={setCount} />}
-            />
-            <Route path="/favorites" element={<Favorites />} />
-          </>
-        ) : (
-          <>
-            {/* Unauthenticated route */}
-            <Route
-              path="/signup"
-              element={<SignUp setUser={setUser} setCount={setCount} />}
-            />
-          </>
-        )}
-        <Route path="*" element={<Homepage />} />
-      </Routes>
-    </div>
+    <DbContextProvider>
+      <div className="bg-neutral-900">
+        <Routes>
+          {user ? (
+            <>
+              {/* Authenticated routes */}
+              <Route
+                path="/"
+                element={<Homepage setUser={setUser} setCount={setCount} />}
+              />
+              <Route path="/favorites" element={<Favorites />} />
+            </>
+          ) : (
+            <>
+              {/* Unauthenticated route */}
+              <Route
+                path="/signup"
+                element={<SignUp setUser={setUser} setCount={setCount} />}
+              />
+            </>
+          )}
+          <Route path="*" element={<Homepage />} />
+        </Routes>
+      </div>
+    </DbContextProvider>
   );
 }
 

@@ -28,6 +28,7 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm, setCount }) {
       alert("Please Enter A Song Name");
     }
   };
+  // console.log(searchTerm.length);
 
   const handleSignOut = () => {
     signOut(auth);

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
 import googleImage from "../assets/google.png";
-import { googleAuthProvider, auth } from "../config/firebase";
+import { googleAuthProvider, auth, db } from "../config/firebase";
 
 function SignUp({ setUser, setCount }) {
   const [name, setName] = useState("");
@@ -9,6 +10,9 @@ function SignUp({ setUser, setCount }) {
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [userName, setUserName] = useState("");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userData, setUserData] = useState({});
 
   const signUp = async () => {
     setErrorMessage(""); // Clear error message before new attempt
@@ -34,14 +38,59 @@ function SignUp({ setUser, setCount }) {
   const signInWithGoogle = async () => {
     setErrorMessage(""); // Clear error message before new attempt
     try {
-      await signInWithPopup(auth, googleAuthProvider);
+      const result = await signInWithPopup(auth, googleAuthProvider);
+      const user = result.user;
+
+      // Set user state after successful sign-in
       setUser(true);
+      setCount(1);
+
+      // Set userName based on email or displayName
+      const userNameFromEmail = user.email.split("@")[0];
+      setUserName(userNameFromEmail);
+
+      // If userName is not set through state, attempt to use displayName
+      if (!name && user.displayName) {
+        setName(user.displayName);
+      }
+
+      // Add the user to Firestore after sign-in
+      await addUser(userNameFromEmail);
     } catch (error) {
       setErrorMessage(
         error.message || "Google sign-in failed. Please try again."
       );
     }
   };
+
+  const addUser = async (userNameFromEmail) => {
+    const userToAdd = name
+      ? { name, email, favorites: [] }
+      : {
+          name: auth.currentUser.displayName,
+          email: auth.currentUser.email,
+          favorites: [],
+        };
+    const docRef = doc(db, "users", userNameFromEmail);
+    await setDoc(docRef, userToAdd);
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        setUserName(user.email.split("@")[0]);
+        setIsAuthenticated(true);
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (isAuthenticated && userName) {
+      addUser();
+    }
+  }, [isAuthenticated, userName]);
 
   return (
     <div className="bg-neutral-900 flex justify-center items-center flex-col h-screen gap-y-5">

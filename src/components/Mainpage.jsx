@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { getDocs, doc, collection } from "firebase/firestore";
 import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
 import YouTubeController from "./YtAudioPlayer";
-
+import { auth, db } from "../config/firebase";
 function Mainpage({ setUser, setCount }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState([]);
@@ -11,14 +12,6 @@ function Mainpage({ setUser, setCount }) {
   const [error, setError] = useState(null);
   const [allIds, setAllIds] = useState([]);
   const [info, setInfo] = useState([]);
-  // useEffect(() => {
-  //   if (info) {
-  //     console.log(info);
-  //   } else {
-  //     console.log("Info is null");
-  //   }
-  // }, [info]);
-  // console.log(allIds);
 
   return (
     <div className="bg-neutral-900 w-3/4 h-screen p-5 rounded-l-3xl">
