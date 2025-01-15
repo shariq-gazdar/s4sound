@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { setDoc, doc } from "firebase/firestore";
 import googleImage from "../assets/google.png";
 import { googleAuthProvider, auth, db } from "../config/firebase";
+import dbContext from "../context/DbContext";
 
 function SignUp({ setUser, setCount }) {
   const [name, setName] = useState("");
@@ -12,8 +13,7 @@ function SignUp({ setUser, setCount }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [userName, setUserName] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [userData, setUserData] = useState({});
-
+  const { dbPresent } = useContext(dbContext);
   const signUp = async () => {
     setErrorMessage(""); // Clear error message before new attempt
     if (!name || !email || !password || !confirmPass) {
@@ -64,15 +64,23 @@ function SignUp({ setUser, setCount }) {
   };
 
   const addUser = async (userNameFromEmail) => {
-    const userToAdd = name
-      ? { name, email, favorites: [] }
-      : {
-          name: auth.currentUser.displayName,
-          email: auth.currentUser.email,
-          favorites: [],
-        };
-    const docRef = doc(db, "users", userNameFromEmail);
-    await setDoc(docRef, userToAdd);
+    if (!dbPresent) {
+      console.warn("Database not available. User not added.");
+      return;
+    }
+
+    try {
+      const userToAdd = {
+        name: name || auth.currentUser?.displayName || "Anonymous User",
+        email: auth.currentUser?.email || email,
+        favorites: [],
+      };
+      const docRef = doc(db, "users", userNameFromEmail);
+      await setDoc(docRef, userToAdd, { merge: true }); // Merge to avoid overwriting
+      console.log("User added/updated successfully.");
+    } catch (error) {
+      console.error("Error adding user to Firestore:", error);
+    }
   };
 
   useEffect(() => {

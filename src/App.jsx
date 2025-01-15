@@ -11,6 +11,7 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Favorites from "./components/Favorites";
 import { getDocs, doc, collection } from "firebase/firestore";
 import DbContextProvider from "./context/dbContextProvider";
+import IdContextProvider from "./context/IdContextProvider";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -37,10 +38,11 @@ function App() {
   // Navigate based on authentication state when `user` changes
   useEffect(() => {
     if (user === null) {
-      navigate("/signup"); // Redirect unauthenticated users to sign-up
-    } else if (user && count == 1) {
-      navigate("/"); // Redirect authenticated users to homepage
+      navigate("/signup");
     }
+    // else if (user && count == 1) {
+    //   navigate("/");
+    // }
   }, [user, navigate]);
 
   return (
