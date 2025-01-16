@@ -38,10 +38,9 @@ function App() {
   useEffect(() => {
     if (user === null) {
       navigate("/signup");
+    } else if (user && count == 1) {
+      navigate("/");
     }
-    // else if (user && count == 1) {
-    //   navigate("/");
-    // }
   }, [user, navigate]);
 
   return (
