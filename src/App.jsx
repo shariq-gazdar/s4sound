@@ -9,7 +9,7 @@ import Homepage from "./components/Homepage";
 import SignUp from "./components/SignUp";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Favorites from "./components/Favorites";
-import DbContextProvider from "./context/dbContextProvider";
+import DbContextProvider from "./context/DbContextProvider";
 import IdContextProvider from "./context/IdContextProvider";
 
 function App() {
