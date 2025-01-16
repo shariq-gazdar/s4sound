@@ -4,14 +4,12 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-import { auth, db } from "./config/firebase";
+import { auth } from "./config/firebase";
 import Homepage from "./components/Homepage";
 import SignUp from "./components/SignUp";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Favorites from "./components/Favorites";
-import { getDocs, doc, collection } from "firebase/firestore";
 import DbContextProvider from "./context/dbContextProvider";
-import IdContextProvider from "./context/IdContextProvider";
 
 function App() {
   const [user, setUser] = useState(null);
