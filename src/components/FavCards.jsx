@@ -1,26 +1,31 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import play from "./playerAssests/play.png";
 import dbContext from "../context/DbContext";
 
 function FavCards({ setVideoId, setAllIds, setInfo }) {
   const { dbData } = useContext(dbContext);
-  // const result = dbData?.filter((item) => item.isFavorite === true);
+  let infoArr;
   const result = dbData.favorites;
-  // console.log(result);
-  // console.log(dbData);
   const handleCardClick = (videoId) => {
     setVideoId(videoId);
-    setAllIds(result.map((r) => r.id.videoId));
+    setAllIds(result.map((r) => r.videoId));
+    infoArr = result.map(
+      (r) => (
+        {
+          id: r.videoId,
+          title: r.title,
+          thumbnail: r.thumbnail,
+          channelTitle: r.channelTitle,
+        },
 
-    const infoArr = result.map((r) => ({
-      id: r.id.videoId,
-      title: r.snippet.title,
-      thumbnail: r.snippet.thumbnails.default.url,
-      channelTitle: r.snippet.channelTitle,
-    }));
+      )
+    );
     setInfo(infoArr);
-    // console.log(videoId);
   };
+  // console.log(result[0].videoId);
+  
+
+
 
   return (
     <div className="flex flex-col w-3/4">
@@ -31,6 +36,7 @@ function FavCards({ setVideoId, setAllIds, setInfo }) {
           alt=""
           className="bg-green-600 rounded-full mx-10 w-14"
           title="Play All"
+          onClick={() => handleCardClick(result[0].videoId)}
         />
       </h1>
       <div className="w-full mt-10  flex flex-wrap">

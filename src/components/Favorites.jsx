@@ -10,6 +10,9 @@ function Favorites() {
   const [videoId, setVideoId] = useState("");
   const [allIds, setAllIds] = useState([]);
   const [info, setInfo] = useState([]);
+  // console.log(info);
+  console.log(allIds);
+
   return (
     <div className="flex h-svh">
       <Sidebar />
