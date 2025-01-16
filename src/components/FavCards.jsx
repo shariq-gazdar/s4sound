@@ -9,23 +9,15 @@ function FavCards({ setVideoId, setAllIds, setInfo }) {
   const handleCardClick = (videoId) => {
     setVideoId(videoId);
     setAllIds(result.map((r) => r.videoId));
-    infoArr = result.map(
-      (r) => (
-        {
-          id: r.videoId,
-          title: r.title,
-          thumbnail: r.thumbnail,
-          channelTitle: r.channelTitle,
-        },
-
-      )
-    );
+    infoArr = result.map((r) => ({
+      id: r.videoId,
+      title: r.title,
+      thumbnail: r.thumbnail,
+      channelTitle: r.channelTitle,
+    }));
     setInfo(infoArr);
   };
   // console.log(result[0].videoId);
-  
-
-
 
   return (
     <div className="flex flex-col w-3/4">
