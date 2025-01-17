@@ -58,7 +58,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
     };
   }, [dbData, favorites]);
   return (
-    <div className="text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full max-w-[90%] ml-10 overflow-y-auto scrollbar-hide">
+    <div className="text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0">
       {result?.length ? (
         result.map((r) => {
           const { title, thumbnails, channelTitle } = r.snippet;
