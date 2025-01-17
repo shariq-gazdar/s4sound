@@ -5,7 +5,6 @@ import { updateDoc, doc, arrayUnion } from "firebase/firestore";
 import Fav from "./playerAssests/favorite.png";
 import FillFav from "./playerAssests/fillFav.png";
 import dbContext from "../context/DbContext";
-import { useEffect } from "react";
 
 function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
   const [favorites, setFavorites] = useState({});
@@ -37,7 +36,6 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
       };
     });
 
-    // Optional Firestore logic
     if (!favorites[videoId]) {
       const userDoc = doc(db, "users", auth.currentUser.email.split("@")[0]);
       updateDoc(userDoc, {
@@ -45,25 +43,16 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
       }).catch((error) => console.error("Error updating Firestore:", error));
     }
   };
-  useEffect(() => {
-    const checkFav = (videoId, isFavorite) => {
-      dbData.favorites.forEach((fav) => {
-        if (fav.videoId === videoId) {
-          console.log(videoId);
-          console.log(!isFavorite);
 
-          return !isFavorite;
-        }
-      });
-    };
-  }, [dbData, favorites]);
   return (
     <div className="text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0">
       {result?.length ? (
         result.map((r) => {
           const { title, thumbnails, channelTitle } = r.snippet;
           const videoId = r.id.videoId;
-          let isFavorite = Boolean(favorites[videoId]);
+          const isFavorite =
+            favorites[videoId] ||
+            dbData?.favorites?.some((fav) => fav.videoId === videoId);
 
           return (
             <div
