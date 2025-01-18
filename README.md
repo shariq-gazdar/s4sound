@@ -97,8 +97,6 @@ Feel free to contribute to the project by opening a pull request. Ensure your ch
 
 ---
 
----
-
 ## Acknowledgments
 
 Special thanks to:
