@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { auth, db } from "../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import { onAuthStateChanged } from "firebase/auth";
@@ -8,7 +8,7 @@ const DbContextProvider = ({ children }) => {
   const [dbData, setDbData] = useState(null);
   const [dbPresent, setDbPresent] = useState(false);
 
-  useEffect(() => {
+  useMemo(() => {
     const unsubscribe = onAuthStateChanged(auth, async (user) => {
       if (user) {
         try {

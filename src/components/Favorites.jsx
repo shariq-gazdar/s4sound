@@ -5,6 +5,7 @@ import { getDocs, doc, collection } from "firebase/firestore";
 import Sidebar from "./SideBar";
 import FavCards from "./FavCards";
 import YtAudioPlayer from "./YtAudioPlayer";
+import DownRow from "./DownRow";
 
 function Favorites() {
   const [videoId, setVideoId] = useState("");
@@ -30,6 +31,7 @@ function Favorites() {
           info={info}
         />
       )}
+      <DownRow />
     </div>
   );
 }

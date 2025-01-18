@@ -174,7 +174,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
-      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800 w-full items-center justify-between rounded-t-2xl h-28">
+      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800 w-full items-center justify-between rounded-t-2xl h-28 mb-14 lg:mb-0">
         <div className="info hidden lg:flex w-64 h-20 gap-x-3">
           <img src={thumbnail} alt="Thumbnail" />
           <div>
