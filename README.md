@@ -97,10 +97,6 @@ Feel free to contribute to the project by opening a pull request. Ensure your ch
 
 ---
 
-## License
-
-This project is licensed under the MIT License. Feel free to use and modify it as needed.
-
 ---
 
 ## Acknowledgments
