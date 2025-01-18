@@ -20,7 +20,6 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
   const [title, setTitle] = useState("");
   const [channelName, setChannelName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!window.YT) {
@@ -173,87 +172,71 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
 
   return (
     <div>
-      {loading ? (
-        <div class="flex flex-row gap-2">
-          <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
-          <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.3s]"></div>
-          <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
-        </div>
-      ) : (
-        <>
-          <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
+      <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
-          <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800 w-full items-center justify-between rounded-t-2xl h-28 mb-14 lg:mb-0">
-            <div className="info hidden lg:flex w-64 h-20 gap-x-3">
-              <img src={thumbnail} alt="Thumbnail" />
-              <div>
-                <marquee className="font-bold w-fit  h-5 " direction="right">
-                  {title}
-                </marquee>
-                <p>{channelName}</p>
-              </div>
-            </div>
-            <div className="flex flex-col items-center justify-center">
-              <div className="flex">
-                <button
-                  onClick={handleReverse}
-                  className="px-4 rounded-md w-20"
-                >
-                  <img src={fr} alt="Rewind" />
-                </button>
-                {isPlaying ? (
-                  <button
-                    onClick={handlePause}
-                    className="px-4 rounded-md w-20"
-                  >
-                    <img src={pause} alt="Pause" />
-                  </button>
-                ) : (
-                  <button onClick={handlePlay} className="px-4 rounded-md w-20">
-                    <img src={play} alt="Play" />
-                  </button>
-                )}
-                <button onClick={handleSkip} className="px-4 rounded-md w-20">
-                  <img src={ff} alt="Fast Forward" />
-                </button>
-              </div>
-              <div>
-                <input
-                  type="range"
-                  min="0"
-                  max={duration}
-                  value={currentTime}
-                  onChange={handleSeekChange}
-                  onMouseUp={handleSeekMouseUp}
-                  className="w-[25vw]"
-                />
-                <div className="flex justify-between text-sm text-gray-300">
-                  <span>{formatTime(currentTime)}</span>
-                  <span>{formatTime(duration)}</span>
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 flex justify-center items-center w-72 gap-x-3">
-              <label className="block text-sm text-gray-300">
-                <img
-                  src={mute ? volumeMute : volumeIcon}
-                  alt="Volume"
-                  className="w-10"
-                  onClick={handleMute}
-                />
-              </label>
-              <input
-                type="range"
-                min="0"
-                max="100"
-                value={volume}
-                onChange={handleVolumeChange}
-                className="w-40"
-              />
+      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800 w-full items-center justify-between rounded-t-2xl h-28 mb-14 lg:mb-0">
+        <div className="info hidden lg:flex w-64 h-20 gap-x-3">
+          <img src={thumbnail} alt="Thumbnail" />
+          <div>
+            <marquee className="font-bold w-fit  h-5 " direction="right">
+              {title}
+            </marquee>
+            <p>{channelName}</p>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex">
+            <button onClick={handleReverse} className="px-4 rounded-md w-20">
+              <img src={fr} alt="Rewind" />
+            </button>
+            {isPlaying ? (
+              <button onClick={handlePause} className="px-4 rounded-md w-20">
+                <img src={pause} alt="Pause" />
+              </button>
+            ) : (
+              <button onClick={handlePlay} className="px-4 rounded-md w-20">
+                <img src={play} alt="Play" />
+              </button>
+            )}
+            <button onClick={handleSkip} className="px-4 rounded-md w-20">
+              <img src={ff} alt="Fast Forward" />
+            </button>
+          </div>
+          <div>
+            <input
+              type="range"
+              min="0"
+              max={duration}
+              value={currentTime}
+              onChange={handleSeekChange}
+              onMouseUp={handleSeekMouseUp}
+              className="w-[25vw]"
+            />
+            <div className="flex justify-between text-sm text-gray-300">
+              <span>{formatTime(currentTime)}</span>
+              <span>{formatTime(duration)}</span>
             </div>
           </div>
-        </>
-      )}
+        </div>
+        <div className="mt-4 flex justify-center items-center w-72 gap-x-3">
+          <label className="block text-sm text-gray-300">
+            <img
+              src={mute ? volumeMute : volumeIcon}
+              alt="Volume"
+              className="w-10"
+              onClick={handleMute}
+            />
+          </label>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={volume}
+            onChange={handleVolumeChange}
+            className="w-40"
+          />
+        </div>
+      </div>
     </div>
   );
 };

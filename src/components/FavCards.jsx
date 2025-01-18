@@ -90,12 +90,7 @@ function FavCards({ setVideoId, setAllIds, setInfo }) {
           </div>
         </>
       ) : loading ? (
-        /* From Uiverse.io by Javierrocadev */
-        <div class="flex flex-row gap-2">
-          <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
-          <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.3s]"></div>
-          <div class="w-4 h-4 rounded-full bg-blue-700 animate-bounce [animation-delay:.7s]"></div>
-        </div>
+        <h1 className="text-xl text-neutral-400 mt-10 ml-10">Loading...</h1>
       ) : (
         <h1 className="text-xl text-neutral-400 mt-10 ml-10">
           No Favorites Found. Search for a song to favorite it!
