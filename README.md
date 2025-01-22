@@ -104,3 +104,7 @@ Special thanks to:
 - Firebase for providing an easy-to-use backend.
 - React for its excellent component-based architecture.
 - Tailwind CSS for fast and flexible styling.
+
+## Download For Windows
+
+https://www.mediafire.com/file/w1mxx388w58ijg9/s4sound_0.1.0_x64_en-US.msi/file , Download Now
