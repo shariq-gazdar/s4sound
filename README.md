@@ -107,4 +107,4 @@ Special thanks to:
 
 ## Download For Windows
 
-[https://www.mediafire.com/file/w1mxx388w58ijg9/s4sound_0.1.0_x64_en-US.msi/file , Download Now]
+[Download Now!](https://www.mediafire.com/file/w1mxx388w58ijg9/s4sound_0.1.0_x64_en-US.msi/file)
