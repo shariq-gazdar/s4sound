@@ -14,7 +14,7 @@ function Mainpage({ setUser, setCount }) {
   const [info, setInfo] = useState([]);
 
   return (
-    <div className="bg-neutral-900 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl">
+    <div className="bg-neutral-900/5 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl">
       <Nav
         setSearchTerm={setSearchTerm}
         setUser={setUser}
