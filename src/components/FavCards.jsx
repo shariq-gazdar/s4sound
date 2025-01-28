@@ -4,7 +4,7 @@ import dbContext from "../context/DbContext";
 import fr from "./playerAssests/fav_remove.png";
 import { db, auth } from "../config/firebase";
 import { updateDoc, doc } from "firebase/firestore";
-
+import { motion } from "framer-motion";
 function FavCards({ setVideoId, setAllIds, setInfo }) {
   const { dbData } = useContext(dbContext);
   const [loading, setLoading] = useState(false);
@@ -60,9 +60,12 @@ function FavCards({ setVideoId, setAllIds, setInfo }) {
           </h1>
           <div className="w-full mt-10 flex flex-wrap overflow-scroll">
             {result.map((r) => (
-              <div
+              <motion.div
                 key={r.videoId}
                 className="bg-neutral-700 flex items-center hover:bg-neutral-800 min-h-fit mb-6 w-full mx-10 rounded-xl cursor-pointer"
+                initial={{ x: 500 }}
+                animate={{ x: 0 }}
+                whileHover={{ scale: 1.05 }}
                 onClick={() => handleCardClick(r.videoId)}
               >
                 <img
@@ -85,7 +88,7 @@ function FavCards({ setVideoId, setAllIds, setInfo }) {
                     removeFav(r.videoId);
                   }}
                 />
-              </div>
+              </motion.div>
             ))}
           </div>
         </>
