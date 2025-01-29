@@ -83,7 +83,6 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm, setCount }) {
             </div>
           )}
         </div>
-        <h1 className="font-bold hidden lg:block">{userName}</h1>
         <button
           className="bg-green-600 p-2 ml-0 lg:ml-10 rounded-lg"
           onClick={handleSignOut}

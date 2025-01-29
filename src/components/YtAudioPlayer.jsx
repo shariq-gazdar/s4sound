@@ -169,12 +169,40 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
     const secs = Math.floor(seconds % 60);
     return `${minutes}:${secs < 10 ? "0" : ""}${secs}`;
   };
+  const handleShortcuts = (e) => {
+    switch (e.key) {
+      case "k": {
+        if (isPlaying) {
+          handlePause();
+        } else {
+          handlePlay();
+        }
+        break;
+      }
+      case "ArrowRight":
+      case "l": {
+        handleSkip();
+        break;
+      }
+      case "ArrowLeft":
+      case "j": {
+        handleReverse();
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+  };
 
   return (
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
-      <div className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800 w-full items-center justify-between rounded-t-2xl h-28 mb-14 lg:mb-0">
+      <div
+        className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800 w-full items-center justify-between rounded-t-2xl h-28 mb-14 lg:mb-0"
+        onKeyDown={handleShortcuts}
+      >
         <div className="info hidden lg:flex w-64 h-20 gap-x-3">
           <img src={thumbnail} alt="Thumbnail" />
           <div>
