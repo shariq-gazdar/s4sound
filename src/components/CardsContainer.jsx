@@ -70,7 +70,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
   };
 
   return (
-    <div className="text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden">
+    <div className=" text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden">
       <AnimatePresence>
         {result?.length ? (
           <motion.div
@@ -90,7 +90,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
                 <motion.div
                   key={videoId}
                   variants={cardVariants}
-                  className="p-4 rounded-lg flex items-center gap-x-4 hover:bg-zinc-800/10 cursor-pointer w-full hover:px-8 border-b"
+                  className="p-4  flex items-center gap-x-4 hover:bg-zinc-800/10 cursor-pointer w-full hover:px-5 border-b"
                   whileHover={{ scale: 1.02 }}
                   onClick={() => handleCardClick(videoId)}
                 >
