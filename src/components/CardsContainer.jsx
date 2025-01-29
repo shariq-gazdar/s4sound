@@ -42,7 +42,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
     const infoArr = result.map((r) => ({
       id: r.id.videoId,
       title: r.snippet.title,
-      thumbnail: r.snippet.thumbnails.default.url,
+      thumbnail: r.snippet.thumbnails.high.url,
       channelTitle: r.snippet.channelTitle,
     }));
     setInfo(infoArr);
@@ -70,7 +70,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
   };
 
   return (
-    <div className=" text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden">
+    <div className=" text-white flex flex-col gap-y-2 h-[calc(100%-210px)] w-full max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden">
       <AnimatePresence>
         {result?.length ? (
           <motion.div
@@ -94,11 +94,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
                   whileHover={{ scale: 1.02 }}
                   onClick={() => handleCardClick(videoId)}
                 >
-                  <img
-                    src={thumbnails.default.url}
-                    alt={title}
-                    className="w-20"
-                  />
+                  <img src={thumbnails.high.url} alt={title} className="w-20" />
                   <div className="flex-1">
                     <div className="font-bold line-clamp-1">{title}</div>
                     <div className="text-sm text-gray-400">{channelTitle}</div>
@@ -106,7 +102,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
                   <motion.img
                     src={isFavorite ? FillFav : Fav}
                     alt={isFavorite ? "Marked as Favorite" : "Mark as Favorite"}
-                    className="w-6 cursor-pointer mr-10"
+                    className="w-6 cursor-pointer mr-10 "
                     whileTap={{ scale: 0.9 }}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -114,7 +110,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
                         videoId,
                         title,
                         channelTitle,
-                        thumbnails.default.url
+                        thumbnails.high.url
                       );
                     }}
                   />

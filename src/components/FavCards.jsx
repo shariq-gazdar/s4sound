@@ -4,7 +4,39 @@ import dbContext from "../context/DbContext";
 import fr from "./playerAssests/fav_remove.png";
 import { db, auth } from "../config/firebase";
 import { updateDoc, doc } from "firebase/firestore";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Updated animation variants
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      when: "beforeChildren",
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, x: 100 }, // Changed from 200 to -100 for left entrance
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      type: "spring",
+      stiffness: 120,
+      damping: 20,
+      duration: 0.5,
+    },
+  },
+  exit: {
+    opacity: 0,
+    x: 100,
+    transition: { duration: 1 },
+  },
+};
+
 function FavCards({ setVideoId, setAllIds, setInfo }) {
   const { dbData } = useContext(dbContext);
   const [loading, setLoading] = useState(false);
@@ -43,61 +75,97 @@ function FavCards({ setVideoId, setAllIds, setInfo }) {
     }
     setLoading(false);
   };
+  // ... keep existing functions unchanged ...
 
   return (
     <div className="flex flex-col w-full lg:w-3/4">
       {result.length > 0 ? (
         <>
-          <h1 className="text-white inline-flex h-fit ml-10 mt-9 font-bold text-4xl justify-between items-center">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-white inline-flex h-fit ml-10 mt-9 font-bold text-4xl justify-between items-center"
+          >
             Favorite Songs:
-            <img
+            <motion.img
               src={play}
               alt="Play All"
               className="bg-green-600 rounded-full mx-10 w-14 cursor-pointer"
               title="Play All"
               onClick={() => handleCardClick(result[0]?.videoId)}
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
             />
-          </h1>
-          <div className="w-full mt-10 flex flex-wrap overflow-scroll">
-            {result.map((r) => (
-              <motion.div
-                key={r.videoId}
-                className="bg-neutral-700 flex items-center hover:bg-neutral-800 min-h-fit mb-6 w-full mx-10 rounded-xl cursor-pointer"
-                initial={{ x: 500 }}
-                animate={{ x: 0 }}
-                whileHover={{ scale: 1.05 }}
-                onClick={() => handleCardClick(r.videoId)}
-              >
-                <img
-                  src={r.thumbnail}
-                  alt={r.title}
-                  className="w-36 h-16 object-cover pl-2 rounded-2xl"
-                />
-                <div className="flex flex-col px-3 py-2 flex-grow">
-                  <h2 className="text-lg font-bold text-neutral-400">
-                    {truncateTitle(r.title)}
-                  </h2>
-                  <h3 className="text-neutral-400">{r.channelTitle}</h3>
-                </div>
-                <img
-                  src={fr}
-                  className="w-7 rounded-full mr-2 cursor-pointer"
-                  title="Remove from Favorites"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    removeFav(r.videoId);
-                  }}
-                />
-              </motion.div>
-            ))}
-          </div>
+          </motion.h1>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            className="w-full mt-10 flex flex-wrap overflow-scroll"
+          >
+            <AnimatePresence mode="wait">
+              {" "}
+              {/* Added mode prop */}
+              {result.map((r) => (
+                <motion.div
+                  key={r.videoId}
+                  variants={cardVariants}
+                  initial="hidden"
+                  animate="visible"
+                  exit="exit"
+                  className="bg-neutral-700 flex items-center hover:bg-neutral-800 min-h-fit mb-6 w-full mx-10 rounded-xl cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  onClick={() => handleCardClick(r.videoId)}
+                  layout // Added for smooth layout transitions
+                >
+                  <motion.img
+                    src={r.thumbnail}
+                    alt={r.title}
+                    className="w-36 h-16 object-cover pl-2 rounded-2xl"
+                    layout="position"
+                  />
+                  <div className="flex flex-col px-3 py-2 flex-grow">
+                    <h2 className="text-lg font-bold text-neutral-400">
+                      {truncateTitle(r.title)}
+                    </h2>
+                    <h3 className="text-neutral-400">{r.channelTitle}</h3>
+                  </div>
+                  <motion.img
+                    src={fr}
+                    className="w-7 rounded-full mr-2 cursor-pointer"
+                    title="Remove from Favorites"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFav(r.videoId);
+                    }}
+                    whileHover={{ scale: 1.2 }}
+                    whileTap={{ scale: 0.8 }}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </motion.div>
         </>
       ) : loading ? (
-        <h1 className="text-xl text-neutral-400 mt-10 ml-10">Loading...</h1>
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-xl text-neutral-400 mt-10 ml-10"
+        >
+          Loading...
+        </motion.h1>
       ) : (
-        <h1 className="text-xl text-neutral-400 mt-10 ml-10">
+        <motion.h1
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          className="text-xl text-neutral-400 mt-10 ml-10"
+        >
           No Favorites Found. Search for a song to favorite it!
-        </h1>
+        </motion.h1>
       )}
     </div>
   );

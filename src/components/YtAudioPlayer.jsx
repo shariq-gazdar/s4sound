@@ -5,6 +5,7 @@ import volumeIcon from "./playerAssests/volume.png";
 import volumeMute from "./playerAssests/volume_off.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
+import { motion } from "framer-motion";
 import "./mainStyle.css";
 
 const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
@@ -20,7 +21,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
   const [title, setTitle] = useState("");
   const [channelName, setChannelName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-
+  const { fav, setFav } = useState(false);
   useEffect(() => {
     if (!window.YT) {
       const tag = document.createElement("script");
@@ -199,10 +200,14 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
-      <div
-        className="controls fixed left-0 bottom-0 text-white p-3 flex bg-neutral-800 w-full items-center justify-between rounded-t-2xl h-28 mb-14 lg:mb-0"
+      <motion.div
+        className="controls fixed left-0 bottom-0 text-white p-3 flex bg-green-700 w-full items-center justify-between rounded-t-2xl h-36 mb-14 lg:mb-0 "
+        initial={{ y: -200 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.25 }}
         onKeyDown={handleShortcuts}
       >
+        {/* Info stuff */}
         <div className="info hidden lg:flex w-64 h-20 gap-x-3">
           <img src={thumbnail} alt="Thumbnail" />
           <div>
@@ -212,7 +217,22 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
             <p>{channelName}</p>
           </div>
         </div>
+        {/* duration stuff */}
         <div className="flex flex-col items-center justify-center">
+          <div className="flex justify-center items-center gap-x-3">
+            <div>{formatTime(currentTime)}</div>
+            <input
+              type="range"
+              min="0"
+              max={duration}
+              value={currentTime}
+              onChange={handleSeekChange}
+              onMouseUp={handleSeekMouseUp}
+              className="w-[25vw]"
+            />
+
+            <div>{formatTime(duration)}</div>
+          </div>
           <div className="flex">
             <button onClick={handleReverse} className="px-4 rounded-md w-20">
               <img src={fr} alt="Rewind" />
@@ -230,22 +250,8 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
               <img src={ff} alt="Fast Forward" />
             </button>
           </div>
-          <div>
-            <input
-              type="range"
-              min="0"
-              max={duration}
-              value={currentTime}
-              onChange={handleSeekChange}
-              onMouseUp={handleSeekMouseUp}
-              className="w-[25vw]"
-            />
-            <div className="flex justify-between text-sm text-gray-300">
-              <span>{formatTime(currentTime)}</span>
-              <span>{formatTime(duration)}</span>
-            </div>
-          </div>
         </div>
+        {/* volume controls */}
         <div className="mt-4 flex justify-center items-center w-72 gap-x-3">
           <label className="block text-sm text-gray-300">
             <img
@@ -264,7 +270,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
             className="w-40"
           />
         </div>
-      </div>
+      </motion.div>
     </div>
   );
 };
