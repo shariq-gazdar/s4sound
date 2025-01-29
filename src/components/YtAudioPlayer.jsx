@@ -5,6 +5,9 @@ import volumeIcon from "./playerAssests/volume.png";
 import volumeMute from "./playerAssests/volume_off.png";
 import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
+import pt from "./playerAssests/prev_track.png";
+import nt from "./playerAssests/next_track.png";
+
 import { motion } from "framer-motion";
 import "./mainStyle.css";
 
@@ -201,7 +204,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
       <motion.div
-        className="controls fixed left-0 bottom-0 text-white p-3 flex bg-green-700 w-full items-center justify-between rounded-t-2xl h-36 mb-14 lg:mb-0 "
+        className="controls fixed left-0 bottom-0 text-white px-20 py-10 flex bg-green-700 w-full items-center justify-between rounded-t-2xl h-36 mb-14 lg:mb-0 "
         initial={{ y: -200 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.25 }}
@@ -209,7 +212,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
       >
         {/* Info stuff */}
         <div className="info hidden lg:flex w-64 h-20 gap-x-3">
-          <img src={thumbnail} alt="Thumbnail" />
+          <img src={thumbnail} alt="Thumbnail" className="rounded-lg" />
           <div>
             <marquee className="font-bold w-fit  h-5 " direction="right">
               {title}
@@ -218,8 +221,8 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
           </div>
         </div>
         {/* duration stuff */}
-        <div className="flex flex-col items-center justify-center">
-          <div className="flex justify-center items-center gap-x-3">
+        <div className="flex flex-col items-center justify-center gap-y-3">
+          <div className="flex justify-center items-center gap-x-3 ">
             <div>{formatTime(currentTime)}</div>
             <input
               type="range"
@@ -228,13 +231,19 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
               value={currentTime}
               onChange={handleSeekChange}
               onMouseUp={handleSeekMouseUp}
-              className="w-[25vw]"
+              className="w-[20vw]"
             />
 
             <div>{formatTime(duration)}</div>
           </div>
           <div className="flex">
-            <button onClick={handleReverse} className="px-4 rounded-md w-20">
+            <button
+              onClick={handleReverse}
+              className="-ml-3 px-2 rounded-md w-16"
+            >
+              <img src={pt} alt="Previous Track" />
+            </button>
+            <button onClick={handleReverse} className="px-4 rounded-md w-16">
               <img src={fr} alt="Rewind" />
             </button>
             {isPlaying ? (
@@ -246,8 +255,14 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
                 <img src={play} alt="Play" />
               </button>
             )}
-            <button onClick={handleSkip} className="px-4 rounded-md w-20">
+            <button onClick={handleSkip} className="px-4 rounded-md w-16">
               <img src={ff} alt="Fast Forward" />
+            </button>
+            <button
+              onClick={handleReverse}
+              className="-ml-3 px-2 rounded-md w-16"
+            >
+              <img src={nt} alt="Next Track" />
             </button>
           </div>
         </div>
