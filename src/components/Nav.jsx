@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Search from "./playerAssests/search.svg";
+import Close from "./playerAssests/close.png";
 import dummy from "../assets/google.png";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";

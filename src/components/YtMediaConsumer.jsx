@@ -6,7 +6,7 @@ function YtMediaConsumer() {
   useEffect(() => {
     console.log("working");
   });
-  return <div>{videoId && <YtAudioPlayer />}</div>;
+  return <div>{videoId ? <YtAudioPlayer /> : <YtAudioPlayer />}</div>;
 }
 
 export default YtMediaConsumer;

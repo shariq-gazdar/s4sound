@@ -156,6 +156,23 @@ const YouTubeController = () => {
 
     setVideoId(nextVideoId);
   };
+  const handleReversePlay = () => {
+    if (!allIds || allIds.length === 0) {
+      console.error("No video IDs available for autoplay.");
+      return;
+    }
+
+    const currentIndex = allIds.indexOf(videoId);
+    if (currentIndex === -1) {
+      console.error("Current videoId not found in allIds.");
+      return;
+    }
+
+    const nextIndex = (currentIndex - 1) % allIds.length;
+    const nextVideoId = allIds[nextIndex];
+
+    setVideoId(nextVideoId);
+  };
 
   const handleInfo = (info) => {
     const videoInfo = info.find((i) => i.id === videoId);
@@ -241,7 +258,7 @@ const YouTubeController = () => {
           {/* Media controls */}
           <div className="flex">
             <button
-              onClick={handleReverse}
+              onClick={handleReversePlay}
               className="-ml-3 px-2 rounded-md w-16"
             >
               <img src={pt} alt="Previous Track" />
