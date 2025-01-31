@@ -8,12 +8,19 @@ import fr from "./playerAssests/fast_rewind.png";
 import pt from "./playerAssests/prev_track.png";
 import nt from "./playerAssests/next_track.png";
 import MediaContext from "../context/MediaContext";
-
+import blackFav from "./playerAssests/blackHeart.svg";
+import blackFill from "./playerAssests/blackHeartFill.svg";
 import { motion } from "framer-motion";
+import dbContext from "../context/DbContext";
 import "./mainStyle.css";
+import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
+import React from "react";
+import { db, auth } from "../config/firebase";
 
 const YouTubeController = () => {
   const { videoId, setVideoId, allIds, info } = useContext(MediaContext);
+  const { dbData } = useContext(dbContext);
+  const [favorites, setFavorites] = useState({}); // Add this at the top with other states
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -26,7 +33,9 @@ const YouTubeController = () => {
   const [title, setTitle] = useState("");
   const [channelName, setChannelName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
-  const { fav, setFav } = useState(false);
+  const [fav, setFav] = useState(() => {
+    return dbData?.favorites?.some((item) => item.videoId === videoId) || false;
+  });
   useEffect(() => {
     if (!window.YT) {
       const tag = document.createElement("script");
@@ -72,6 +81,12 @@ const YouTubeController = () => {
       }
     };
   }, [videoId]);
+  useEffect(() => {
+    if (dbData?.favorites) {
+      const isFav = dbData.favorites.some((item) => item.videoId === videoId);
+      setFav(isFav);
+    }
+  }, [videoId, dbData]);
 
   useEffect(() => {
     const updateTime = setInterval(() => {
@@ -217,6 +232,38 @@ const YouTubeController = () => {
       }
     }
   };
+  const handleFav = async () => {
+    if (!auth.currentUser) {
+      console.error("User not authenticated");
+      return;
+    }
+    const userDoc = doc(db, "users", auth.currentUser.email.split("@")[0]);
+    const favData = { videoId, title, channelName, thumbnail };
+    try {
+      if (fav) {
+        await updateDoc(userDoc, {
+          favorites: arrayRemove(favData),
+        });
+        setFavorites((prev) => {
+          const newFavs = { ...prev };
+          delete newFavs[videoId];
+          return newFavs;
+        });
+      } else {
+        await updateDoc(userDoc, {
+          favorites: arrayUnion(favData),
+        });
+        setFavorites((prev) => ({
+          ...prev,
+          [videoId]: favData,
+        }));
+      }
+      setFav(!fav);
+    } catch (error) {
+      console.error("Error updating favorites:", error);
+      // Consider rolling back state here
+    }
+  };
 
   return (
     <div>
@@ -304,6 +351,17 @@ const YouTubeController = () => {
             onChange={handleVolumeChange}
             className="w-40"
           />
+          <div>
+            <img
+              src={!fav ? blackFill : blackFav}
+              alt={!fav ? "Remove from favorites" : "Add to favorites"}
+              className="w-10 cursor-pointer"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFav();
+              }}
+            />
+          </div>
         </div>
       </motion.div>
     </div>
