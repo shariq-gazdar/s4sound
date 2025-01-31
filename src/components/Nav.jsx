@@ -5,11 +5,19 @@ import dummy from "../assets/google.png";
 import { auth } from "../config/firebase";
 import { signOut } from "firebase/auth";
 
-function Nav({ setSearchTerm, setUser, setResult, searchTerm, setCount }) {
+function Nav({
+  setSearchTerm,
+  setUser,
+  setResult,
+  searchTerm,
+  setCount,
+  setInvisible,
+  invisible,
+}) {
   const [userName, setUserName] = useState("");
   const [url, setUrl] = useState(dummy);
   const [mobUser, setMobUser] = useState(false);
-
+  const [icon, setIcon] = useState(false);
   useEffect(() => {
     if (auth.currentUser) {
       setUserName(auth.currentUser.email.split("@")[0]);
@@ -18,6 +26,8 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm, setCount }) {
   }, [auth.currentUser]);
 
   const apiUpdate = () => {
+    setIcon(!icon);
+    setInvisible(true);
     setResult([]);
     if (searchTerm) {
       fetch(
@@ -47,6 +57,13 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm, setCount }) {
       apiUpdate();
     }
   };
+  const removeSearch = () => {
+    setIcon(!icon);
+    setInvisible(!invisible);
+  };
+  useEffect(() => {
+    console.log(invisible);
+  });
 
   return (
     <nav className="flex justify-center lg:justify-between p-5 text-white items-center gap-x-10 gap-y-5 lg:gap-y-0 flex-wrap-reverse lg:flex-nowrap">
@@ -60,12 +77,21 @@ function Nav({ setSearchTerm, setUser, setResult, searchTerm, setCount }) {
           }}
           onKeyDown={handleKeyDown}
         />
-        <img
-          src={Search}
-          alt="Search Icon"
-          className="absolute top-2 right-3 cursor-pointer"
-          onClick={apiUpdate}
-        />
+        {icon ? (
+          <img
+            src={Close}
+            alt="Close Icon"
+            className="absolute top-2 right-3 cursor-pointer w-6"
+            onClick={removeSearch}
+          />
+        ) : (
+          <img
+            src={Search}
+            alt="Search Icon"
+            className="absolute top-2 right-3 cursor-pointer"
+            onClick={apiUpdate}
+          />
+        )}
       </div>
       <div className="flex w-full lg:gap-x-3 lg:justify-end justify-between items-center">
         <div

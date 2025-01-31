@@ -18,7 +18,7 @@ const YouTubeController = () => {
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(50);
+  const [volume, setVolume] = useState(5);
   const [isSeeking, setIsSeeking] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [previousVol, setPreviousVol] = useState(50);
