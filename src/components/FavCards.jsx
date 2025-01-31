@@ -80,7 +80,7 @@ function FavCards({}) {
   // ... keep existing functions unchanged ...
 
   return (
-    <div className="flex flex-col w-full lg:w-3/4">
+    <div className="flex flex-col w-full lg:w-3/4 h-[80%]">
       {result.length > 0 ? (
         <>
           <motion.h1
