@@ -29,7 +29,9 @@ function Mainpage({ setUser, setCount }) {
       {error && <div className="text-red-500 text-center">{error}</div>}
       {invisible ? (
         <CardsContainer searchTerm={searchTerm} result={result} />
-      ) : null}
+      ) : (
+        <div className="text-white ml-10">Search for your favorite songs</div>
+      )}
     </div>
   );
 }

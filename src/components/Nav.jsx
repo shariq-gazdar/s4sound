@@ -24,14 +24,14 @@ function Nav({
       setUrl(auth.currentUser.photoURL || dummy); // Fallback to dummy if photoURL is null/undefined
     }
   }, [auth.currentUser]);
-
+  const API_KEY = import.meta.env.VITE_YOUTUBESEARCH_APIKEY;
   const apiUpdate = () => {
     setIcon(!icon);
     setInvisible(true);
     setResult([]);
     if (searchTerm) {
       fetch(
-        `  https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchTerm}&type=video&videoCategoryId=10&key=AIzaSyDBFgCzwTkG7tOKIW-gm0PrN-y8TcJmQFc`
+        `  https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchTerm}&type=video&videoCategoryId=10&key=${API_KEY}`
       )
         .then((res) => res.json())
         .then((data) => {
