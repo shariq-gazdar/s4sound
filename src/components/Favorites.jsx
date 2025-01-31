@@ -23,14 +23,7 @@ function Favorites() {
         setInfo={setInfo}
         info={info}
       />
-      {videoId && (
-        <YtAudioPlayer
-          videoId={videoId}
-          allIds={allIds}
-          setVideoId={setVideoId}
-          info={info}
-        />
-      )}
+
       <DownRow />
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   onAuthStateChanged,
   setPersistence,
@@ -10,7 +10,9 @@ import SignUp from "./components/SignUp";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Favorites from "./components/Favorites";
 import DbContextProvider from "./context/DbContextProvider";
-import IdContextProvider from "./context/IdContextProvider";
+import MediaContextProvider from "./context/MediaContextProvider";
+import MediaContext from "./context/MediaContext";
+import YtMediaConsumer from "./components/YtMediaConsumer";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -45,29 +47,32 @@ function App() {
 
   return (
     <DbContextProvider>
-      <div className="bg-neutral-900">
-        <Routes>
-          {user ? (
-            <>
-              {/* Authenticated routes */}
-              <Route
-                path="/"
-                element={<Homepage setUser={setUser} setCount={setCount} />}
-              />
-              <Route path="/favorites" element={<Favorites />} />
-            </>
-          ) : (
-            <>
-              {/* Unauthenticated route */}
-              <Route
-                path="/signup"
-                element={<SignUp setUser={setUser} setCount={setCount} />}
-              />
-            </>
-          )}
-          <Route path="*" element={<Homepage />} />
-        </Routes>
-      </div>
+      <MediaContextProvider>
+        <div className="bg-neutral-900">
+          <Routes>
+            {user ? (
+              <>
+                {/* Authenticated routes */}
+                <Route
+                  path="/"
+                  element={<Homepage setUser={setUser} setCount={setCount} />}
+                />
+                <Route path="/favorites" element={<Favorites />} />
+              </>
+            ) : (
+              <>
+                {/* Unauthenticated route */}
+                <Route
+                  path="/signup"
+                  element={<SignUp setUser={setUser} setCount={setCount} />}
+                />
+              </>
+            )}
+            <Route path="*" element={<Homepage />} />
+          </Routes>
+          <YtMediaConsumer />
+        </div>
+      </MediaContextProvider>
     </DbContextProvider>
   );
 }

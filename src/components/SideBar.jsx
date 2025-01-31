@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import Logo from "../assets/Logo.png";
 import { NavLink } from "react-router-dom";
-
+import FillFav from "./playerAssests/fillFav.png";
+import { motion } from "framer-motion";
 function SideBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {
@@ -31,30 +32,26 @@ function SideBar() {
         } md:block hidden`}
       >
         <ul className="space-y-6">
-          <li>
+          <motion.li whileHover={{ scale: 1.02 }}>
             <NavLink
               to="/favorites"
               className={({ isActive }) =>
-                `text-xl transition-colors ${
+                `text-xl flex items-end gap-x-2 transition-colors ${
                   isActive ? "text-white" : "text-neutral-100/70"
                 } hover:text-white`
               }
             >
+              <span>
+                <img
+                  src={FillFav}
+                  alt=""
+                  className="inline w-7 
+                "
+                />
+              </span>
               Favorites
             </NavLink>
-          </li>
-          <li>
-            <NavLink
-              to="/playlists"
-              className={({ isActive }) =>
-                `text-xl transition-colors ${
-                  isActive ? "text-white" : "text-neutral-100/70"
-                } hover:text-white`
-              }
-            >
-              Playlists
-            </NavLink>
-          </li>
+          </motion.li>
         </ul>
       </div>
 

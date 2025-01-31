@@ -5,6 +5,7 @@ import fr from "./playerAssests/fav_remove.png";
 import { db, auth } from "../config/firebase";
 import { updateDoc, doc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
+import MediaContext from "../context/MediaContext";
 
 // Updated animation variants
 const containerVariants = {
@@ -37,8 +38,9 @@ const cardVariants = {
   },
 };
 
-function FavCards({ setVideoId, setAllIds, setInfo }) {
+function FavCards({}) {
   const { dbData } = useContext(dbContext);
+  const { setVideoId, setAllIds, setInfo } = useContext(MediaContext);
   const [loading, setLoading] = useState(false);
   const result = dbData?.favorites || [];
 
@@ -115,7 +117,7 @@ function FavCards({ setVideoId, setAllIds, setInfo }) {
                   initial="hidden"
                   animate="visible"
                   exit="exit"
-                  className="bg-neutral-700 flex items-center hover:bg-neutral-800 min-h-fit mb-6 w-full mx-10 rounded-xl cursor-pointer"
+                  className="  flex items-center hover:bg-neutral-800 min-h-fit mb-6 w-full mx-10 border-b pb-2 cursor-pointer"
                   whileHover={{ scale: 1.02 }}
                   onClick={() => handleCardClick(r.videoId)}
                   layout // Added for smooth layout transitions

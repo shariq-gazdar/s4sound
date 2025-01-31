@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { getDocs, doc, collection } from "firebase/firestore";
 import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
 import YouTubeController from "./YtAudioPlayer";
 import { auth, db } from "../config/firebase";
+import MediaContext from "../context/MediaContext";
 function Mainpage({ setUser, setCount }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState([]);
-  const [videoId, setVideoId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [allIds, setAllIds] = useState([]);
-  const [info, setInfo] = useState([]);
-
   return (
     <div className="bg-neutral-900/5 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl">
       <Nav
@@ -29,23 +26,7 @@ function Mainpage({ setUser, setCount }) {
       {loading ? (
         <div className="text-white text-center">Loading...</div>
       ) : (
-        <CardsContainer
-          searchTerm={searchTerm}
-          result={result}
-          setAllIds={setAllIds}
-          setVideoId={setVideoId}
-          setInfo={setInfo}
-          info={info}
-        />
-      )}
-
-      {videoId && (
-        <YouTubeController
-          videoId={videoId}
-          allIds={allIds}
-          setVideoId={setVideoId}
-          info={info}
-        />
+        <CardsContainer searchTerm={searchTerm} result={result} />
       )}
     </div>
   );

@@ -5,6 +5,7 @@ import { updateDoc, doc, arrayUnion } from "firebase/firestore";
 import Fav from "./playerAssests/favorite.png";
 import FillFav from "./playerAssests/fillFav.png";
 import dbContext from "../context/DbContext";
+import MediaContext from "../context/MediaContext";
 import { motion, AnimatePresence } from "framer-motion";
 
 const containerVariants = {
@@ -31,11 +32,13 @@ const cardVariants = {
   },
 };
 
-function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
+function CardsContainer({ result }) {
   const [favorites, setFavorites] = useState({});
   const { dbData } = useContext(dbContext);
+  const { setVideoId, setAllIds, setInfo } = useContext(MediaContext);
 
   const handleCardClick = (videoId) => {
+    console.log("clicked");
     setVideoId(videoId);
     setAllIds(result.map((r) => r.id.videoId));
 
@@ -70,7 +73,7 @@ function CardsContainer({ result, setVideoId, setAllIds, setInfo }) {
   };
 
   return (
-    <div className=" text-white flex flex-col gap-y-2 h-[calc(100%-210px)] w-full max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden">
+    <div className=" text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full lg:max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden  ">
       <AnimatePresence>
         {result?.length ? (
           <motion.div

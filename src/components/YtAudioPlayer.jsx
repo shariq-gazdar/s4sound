@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useContext } from "react";
 import play from "./playerAssests/play.png";
 import pause from "./playerAssests/pause.png";
 import volumeIcon from "./playerAssests/volume.png";
@@ -7,11 +7,13 @@ import ff from "./playerAssests/fast_forward.png";
 import fr from "./playerAssests/fast_rewind.png";
 import pt from "./playerAssests/prev_track.png";
 import nt from "./playerAssests/next_track.png";
+import MediaContext from "../context/MediaContext";
 
 import { motion } from "framer-motion";
 import "./mainStyle.css";
 
-const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
+const YouTubeController = () => {
+  const { videoId, setVideoId, allIds, info } = useContext(MediaContext);
   const playerRef = useRef(null);
   const [player, setPlayer] = useState(null);
   const [currentTime, setCurrentTime] = useState(0);
@@ -236,6 +238,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
 
             <div>{formatTime(duration)}</div>
           </div>
+          {/* Media controls */}
           <div className="flex">
             <button
               onClick={handleReverse}
@@ -259,7 +262,7 @@ const YouTubeController = ({ videoId, setVideoId, allIds, info }) => {
               <img src={ff} alt="Fast Forward" />
             </button>
             <button
-              onClick={handleReverse}
+              onClick={handleAutoPlay}
               className="-ml-3 px-2 rounded-md w-16"
             >
               <img src={nt} alt="Next Track" />

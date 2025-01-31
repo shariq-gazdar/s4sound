@@ -7,6 +7,7 @@ import Favorites from "./Favorites";
 // import Player from "./Mainpage/Player";
 import YouTubeAudioPlayer from "./YtAudioPlayer";
 import DownRow from "./DownRow";
+import MediaContextProvider from "../context/MediaContextProvider";
 
 function Homepage({ setUser, setCount }) {
   return (
