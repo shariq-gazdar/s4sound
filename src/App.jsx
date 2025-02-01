@@ -21,13 +21,7 @@ function App() {
 
   useEffect(() => {
     // Set persistence explicitly
-    setPersistence(auth, browserLocalPersistence)
-      .then(() => {
-        console.log("Persistence set to local.");
-      })
-      .catch((error) => {
-        console.error("Error setting persistence:", error.message);
-      });
+    setPersistence(auth, browserLocalPersistence);
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser); // Update user state

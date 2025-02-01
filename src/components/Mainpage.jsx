@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useContext } from "react";
-import { getDocs, doc, collection } from "firebase/firestore";
 import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
-import YouTubeController from "./YtAudioPlayer";
-import { auth, db } from "../config/firebase";
-import MediaContext from "../context/MediaContext";
-import { div } from "framer-motion/client";
+import { auth } from "../config/firebase";
+import dbContext from "../context/DbContext";
+
 function Mainpage({ setUser, setCount }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [exist, setExist] = useState(false);
   const [error, setError] = useState(null);
   const [invisible, setInvisible] = useState(true);
+
   return (
     <div className="bg-neutral-900/5 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl">
       <Nav

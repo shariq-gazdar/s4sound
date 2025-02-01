@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, getDocs } from "firebase/firestore";
 import googleImage from "../assets/google.png";
 import { googleAuthProvider, auth, db } from "../config/firebase";
 import dbContext from "../context/DbContext";
@@ -13,7 +13,8 @@ function SignUp({ setUser, setCount }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [userName, setUserName] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { dbPresent } = useContext(dbContext);
+  const [exist, setExist] = useState(false);
+  const { dbPresent, d } = useContext(dbContext);
   const signUp = async () => {
     setErrorMessage(""); // Clear error message before new attempt
     if (!name || !email || !password || !confirmPass) {
@@ -63,13 +64,26 @@ function SignUp({ setUser, setCount }) {
     }
   };
 
+  const checkUser = () => {
+    if (!auth.currentUser) return;
+    const exists = d.some(
+      (user) => user.id === auth.currentUser.email.split("@")[0]
+    );
+    setExist(exists);
+  };
   const addUser = async (userNameFromEmail) => {
+    checkUser();
     if (!dbPresent) {
       console.warn("Database not available. User not added.");
       return;
     }
 
     try {
+      if (exist) {
+        console.warn("User already exists in Firestore.");
+        return;
+      }
+
       const userToAdd = {
         name: name || auth.currentUser?.displayName || "Anonymous User",
         email: auth.currentUser?.email || email,

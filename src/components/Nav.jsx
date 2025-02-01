@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Search from "./playerAssests/search.svg";
 import Close from "./playerAssests/close.png";
 import dummy from "../assets/google.png";
-import { auth } from "../config/firebase";
-import { signOut } from "firebase/auth";
+import { auth, db } from "../config/firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, getDocs, collection } from "firebase/firestore";
+import dbContext from "../context/DbContext";
 
 function Nav({
   setSearchTerm,
@@ -18,6 +20,7 @@ function Nav({
   const [url, setUrl] = useState(dummy);
   const [mobUser, setMobUser] = useState(false);
   const [icon, setIcon] = useState(false);
+
   useEffect(() => {
     if (auth.currentUser) {
       setUserName(auth.currentUser.email.split("@")[0]);
@@ -61,9 +64,6 @@ function Nav({
     setIcon(!icon);
     setInvisible(!invisible);
   };
-  useEffect(() => {
-    console.log(invisible);
-  });
 
   return (
     <nav className="flex justify-center lg:justify-between p-5 text-white items-center gap-x-10 gap-y-5 lg:gap-y-0 flex-wrap-reverse lg:flex-nowrap">
