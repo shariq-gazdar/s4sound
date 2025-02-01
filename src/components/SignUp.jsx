@@ -3,6 +3,7 @@ import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { setDoc, doc, getDocs } from "firebase/firestore";
 import googleImage from "../assets/google.png";
 import { googleAuthProvider, auth, db } from "../config/firebase";
+import { Link } from "react-router-dom";
 import dbContext from "../context/DbContext";
 
 function SignUp({ setUser, setCount }) {
@@ -151,17 +152,26 @@ function SignUp({ setUser, setCount }) {
         onChange={(e) => setConfirmPass(e.target.value)}
       />
 
-      <div className="flex flex-col gap-y-3 w-72">
-        <button className="bg-white p-3 rounded-lg font-bold" onClick={signUp}>
+      <div className="flex flex-col gap-y-3 w-72 items-center">
+        <button
+          className="bg-white p-3 rounded-lg font-bold w-full"
+          onClick={signUp}
+        >
           Sign Up
         </button>
         <button
-          className="bg-blue-500 p-3 rounded-lg font-bold flex items-center justify-center"
+          className="bg-blue-500 p-3 rounded-lg font-bold flex items-center justify-center w-full"
           onClick={signInWithGoogle}
         >
           Sign In with Google
           <img src={googleImage} alt="Google" className="w-6 ml-2" />
         </button>
+        <h1 className="text-white">
+          Already have an account{" "}
+          <Link to="/login" className="text-blue-500">
+            login
+          </Link>
+        </h1>
       </div>
     </div>
   );

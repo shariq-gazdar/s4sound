@@ -14,6 +14,7 @@ import MediaContextProvider from "./context/MediaContextProvider";
 import MediaContext from "./context/MediaContext";
 import YtMediaConsumer from "./components/YtMediaConsumer";
 import Library from "./components/Library";
+import Login from "./components/Login";
 function App() {
   const [user, setUser] = useState(null);
   const [count, setCount] = useState(0);
@@ -53,6 +54,7 @@ function App() {
                 />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/library" element={<Library />} />
+                <Route path="/login" element={<Login />} />
               </>
             ) : (
               <>
