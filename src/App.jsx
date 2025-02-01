@@ -54,7 +54,6 @@ function App() {
                 />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/library" element={<Library />} />
-                <Route path="/login" element={<Login />} />
               </>
             ) : (
               <>
