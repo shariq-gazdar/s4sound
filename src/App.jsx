@@ -13,7 +13,7 @@ import DbContextProvider from "./context/DbContextProvider";
 import MediaContextProvider from "./context/MediaContextProvider";
 import MediaContext from "./context/MediaContext";
 import YtMediaConsumer from "./components/YtMediaConsumer";
-
+import Playlist from "./components/Playlists";
 function App() {
   const [user, setUser] = useState(null);
   const [count, setCount] = useState(0);
@@ -58,6 +58,7 @@ function App() {
                   element={<Homepage setUser={setUser} setCount={setCount} />}
                 />
                 <Route path="/favorites" element={<Favorites />} />
+                <Route path="/playlist" element={<Playlist />} />
               </>
             ) : (
               <>

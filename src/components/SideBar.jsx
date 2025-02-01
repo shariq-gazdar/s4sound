@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Logo from "../assets/Logo.png";
 import { NavLink } from "react-router-dom";
 import FillFav from "./playerAssests/fillFav.png";
+import playList from "./playerAssests/playList.svg";
 import { motion } from "framer-motion";
 function SideBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,40 +53,28 @@ function SideBar() {
               Favorites
             </NavLink>
           </motion.li>
+          <motion.li whileHover={{ scale: 1.02 }}>
+            <NavLink
+              to="/playlist"
+              className={({ isActive }) =>
+                `text-xl flex items-end gap-x-2 transition-colors ${
+                  isActive ? "text-white" : "text-neutral-100/70"
+                } hover:text-white`
+              }
+            >
+              <span>
+                <img
+                  src={playList}
+                  alt=""
+                  className="inline w-7 
+                "
+                />
+              </span>
+              Playlists
+            </NavLink>
+          </motion.li>
         </ul>
       </div>
-
-      {/* Responsive Dropdown Menu */}
-      {isMenuOpen && (
-        <div className="md:hidden flex flex-col text-white p-5 space-y-6 gap-y-6">
-          <ul className="space-y-6">
-            <li>
-              <NavLink
-                to="/favorites"
-                className={({ isActive }) =>
-                  `text-xl transition-colors ${
-                    isActive ? "text-white" : "text-neutral-100/70"
-                  } hover:text-white`
-                }
-              >
-                Favorites
-              </NavLink>
-            </li>
-            <li>
-              <NavLink
-                to="/playlists"
-                className={({ isActive }) =>
-                  `text-xl transition-colors ${
-                    isActive ? "text-white" : "text-neutral-100/70"
-                  } hover:text-white`
-                }
-              >
-                Playlists
-              </NavLink>
-            </li>
-          </ul>
-        </div>
-      )}
     </div>
   );
 }

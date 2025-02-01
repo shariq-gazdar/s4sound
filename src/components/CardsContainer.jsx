@@ -117,6 +117,9 @@ function CardsContainer({ result }) {
                       );
                     }}
                   />
+                  <motion.span className="-ml-8" whileHover={{ scale: 1.1 }}>
+                    ☰
+                  </motion.span>
                 </motion.div>
               );
             })}
