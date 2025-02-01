@@ -1,12 +1,13 @@
 import React from "react";
 import Sidebar from "./SideBar";
 import DownRow from "./DownRow";
+import PlayCards from "./PlayCards";
 
 function Playlists() {
   return (
     <div className="flex h-svh">
       <Sidebar />
-      <h1 className="text-white  p-8 font-bold">This Feature is in Working!</h1>
+      <PlayCards />
       <DownRow />
     </div>
   );
