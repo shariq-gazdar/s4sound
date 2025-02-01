@@ -1,13 +1,13 @@
 import React from "react";
 import Sidebar from "./SideBar";
 import DownRow from "./DownRow";
-import PlayCards from "./PlayCards";
+import LibCards from "./LibCards";
 
 function Playlists() {
   return (
     <div className="flex h-svh">
       <Sidebar />
-      <PlayCards />
+      <LibCards />
       <DownRow />
     </div>
   );

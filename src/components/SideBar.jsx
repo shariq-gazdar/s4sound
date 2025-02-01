@@ -55,7 +55,7 @@ function SideBar() {
           </motion.li>
           <motion.li whileHover={{ scale: 1.02 }}>
             <NavLink
-              to="/playlist"
+              to="/library"
               className={({ isActive }) =>
                 `text-xl flex items-end gap-x-2 transition-colors ${
                   isActive ? "text-white" : "text-neutral-100/70"
@@ -70,7 +70,7 @@ function SideBar() {
                 "
                 />
               </span>
-              Playlists
+              Library
             </NavLink>
           </motion.li>
         </ul>
