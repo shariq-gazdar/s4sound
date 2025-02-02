@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import {
   onAuthStateChanged,
   setPersistence,
@@ -7,42 +7,43 @@ import {
 import { auth } from "./config/firebase";
 import Homepage from "./components/Homepage";
 import SignUp from "./components/SignUp";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Favorites from "./components/Favorites";
 import DbContextProvider from "./context/DbContextProvider";
 import MediaContextProvider from "./context/MediaContextProvider";
-import MediaContext from "./context/MediaContext";
 import YtMediaConsumer from "./components/YtMediaConsumer";
 import Library from "./components/Library";
 import Login from "./components/Login";
+
 function App() {
   const [user, setUser] = useState(null);
-  const [count, setCount] = useState(0);
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     // Set persistence explicitly
     setPersistence(auth, browserLocalPersistence);
 
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser); // Update user state
+      setUser(currentUser);
+      setIsAuthChecked(true);
     });
 
     return () => unsubscribe();
   }, []);
 
-  // Navigate based on authentication state when `user` changes
   useEffect(() => {
-    console.log(count);
-
-    if (count === 0) {
-      navigate("/signup");
-    } else if (user && count == 1) {
-      navigate("/");
-    } else if (count == 2) {
-      navigate("/login");
+    if (isAuthChecked) {
+      if (
+        !user &&
+        location.pathname !== "/signup" &&
+        location.pathname !== "/login"
+      ) {
+        navigate("/signup");
+      }
     }
-  }, [user, navigate]);
+  }, [user, isAuthChecked, location, navigate]);
 
   return (
     <DbContextProvider>
@@ -52,24 +53,15 @@ function App() {
             {user ? (
               <>
                 {/* Authenticated routes */}
-                <Route
-                  path="/"
-                  element={<Homepage setUser={setUser} setCount={setCount} />}
-                />
+                <Route path="/" element={<Homepage setUser={setUser} />} />
                 <Route path="/favorites" element={<Favorites />} />
                 <Route path="/library" element={<Library />} />
               </>
             ) : (
               <>
-                {/* Unauthenticated route */}
-                <Route
-                  path="/login"
-                  element={<Login setUser={setUser} setCount={setCount} />}
-                />
-                <Route
-                  path="/signup"
-                  element={<SignUp setUser={setUser} setCount={setCount} />}
-                />
+                {/* Unauthenticated routes */}
+                <Route path="/login" element={<Login setUser={setUser} />} />
+                <Route path="/signup" element={<SignUp setUser={setUser} />} />
               </>
             )}
             <Route path="*" element={<Homepage />} />

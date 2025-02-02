@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { setDoc, doc, getDocs } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 import googleImage from "../assets/google.png";
 import { googleAuthProvider, auth, db } from "../config/firebase";
 import { Link } from "react-router-dom";
@@ -14,8 +14,8 @@ function SignUp({ setUser, setCount }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [userName, setUserName] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [exist, setExist] = useState(false);
-  const { dbPresent, d } = useContext(dbContext);
+  const { d } = useContext(dbContext);
+
   const signUp = async () => {
     setErrorMessage(""); // Clear error message before new attempt
     if (!name || !email || !password || !confirmPass) {
@@ -26,10 +26,23 @@ function SignUp({ setUser, setCount }) {
       setErrorMessage("Passwords do not match.");
       return;
     }
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      setUser(true);
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const newUser = userCredential.user;
+      const userNameFromEmail = email.split("@")[0];
+      setUserName(userNameFromEmail);
+
+      // ✅ Set the correct user object
+      setUser(newUser);
       setCount(1);
+
+      // Add user to Firestore
+      addUser(userNameFromEmail, newUser);
     } catch (error) {
       setErrorMessage(
         error.message || "Something went wrong. Please try again."
@@ -43,21 +56,17 @@ function SignUp({ setUser, setCount }) {
       const result = await signInWithPopup(auth, googleAuthProvider);
       const user = result.user;
 
-      // Set user state after successful sign-in
       setUser(true);
       setCount(1);
 
-      // Set userName based on email or displayName
       const userNameFromEmail = user.email.split("@")[0];
       setUserName(userNameFromEmail);
 
-      // If userName is not set through state, attempt to use displayName
       if (!name && user.displayName) {
         setName(user.displayName);
       }
 
-      // Add the user to Firestore after sign-in
-      await addUser(userNameFromEmail);
+      addUser(userNameFromEmail, user);
     } catch (error) {
       setErrorMessage(
         error.message || "Google sign-in failed. Please try again."
@@ -65,29 +74,29 @@ function SignUp({ setUser, setCount }) {
     }
   };
 
-  const checkUser = () => {
-    if (!auth.currentUser) return;
-    const exists = d.some(
-      (user) => user.id === auth.currentUser.email.split("@")[0]
-    );
-    setExist(exists);
+  const checkUser = async (userEmail) => {
+    const existingUsers = d.map((user) => user.id);
+    return existingUsers.includes(userEmail.split("@")[0]);
   };
-  const addUser = async (userNameFromEmail) => {
-    checkUser();
+
+  const addUser = async (userNameFromEmail, user) => {
+    const userExists = await checkUser(user.email);
+
+    if (userExists) {
+      console.warn("User already exists in Firestore.");
+      return;
+    }
+
+    const userToAdd = {
+      name: name || user.displayName || "Anonymous User",
+      email: user.email,
+      favorites: [],
+    };
 
     try {
-      if (exist) {
-        console.warn("User already exists in Firestore.");
-        return;
-      }
-
-      const userToAdd = {
-        name: name || auth.currentUser?.displayName || "Anonymous User",
-        email: auth.currentUser?.email || email,
-        favorites: [],
-      };
-      const docRef = doc(db, "users", userNameFromEmail);
-      await setDoc(docRef, userToAdd, { merge: true }); // Merge to avoid overwriting
+      await setDoc(doc(db, "users", userNameFromEmail), userToAdd, {
+        merge: true,
+      });
       console.log("User added/updated successfully.");
     } catch (error) {
       console.error("Error adding user to Firestore:", error);
@@ -97,19 +106,15 @@ function SignUp({ setUser, setCount }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
-        setUserName(user.email.split("@")[0]);
+        const userNameFromEmail = user.email.split("@")[0];
+        setUserName(userNameFromEmail);
         setIsAuthenticated(true);
+        addUser(userNameFromEmail, user);
       }
     });
 
     return () => unsubscribe();
   }, []);
-
-  useEffect(() => {
-    if (isAuthenticated && userName) {
-      addUser();
-    }
-  }, [isAuthenticated, userName]);
 
   return (
     <div className="bg-neutral-900 flex justify-center items-center flex-col h-screen gap-y-5">
@@ -167,9 +172,7 @@ function SignUp({ setUser, setCount }) {
           <Link
             to="/login"
             className="text-blue-500"
-            onClick={() => {
-              setCount(2);
-            }}
+            onClick={() => setCount(2)}
           >
             login
           </Link>

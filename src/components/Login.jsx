@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleAuthProvider } from "../config/firebase";
+import { auth, googleAuthProvider, db } from "../config/firebase";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import googleImage from "../assets/google.png";
 
@@ -8,11 +9,11 @@ function Login({ setUser, setCount }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate(); // Redirect after login
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setErrorMessage(""); // Clear error message before new attempt
+    setErrorMessage("");
 
     if (!email || !password) {
       setErrorMessage("All fields are required.");
@@ -20,24 +21,66 @@ function Login({ setUser, setCount }) {
     }
 
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      setUser(auth);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+      const user = userCredential.user;
+      setUser(user);
       setCount(1);
-      navigate("/"); // Redirect after successful login
+      navigate("/");
+
+      // Add user to Firestore if not already added
+      const userNameFromEmail = user.email.split("@")[0];
+      await addUser(userNameFromEmail, user);
     } catch (error) {
       setErrorMessage(error.message || "Invalid email or password.");
     }
   };
 
   const handleGoogleLogin = async () => {
-    setErrorMessage(""); // Clear error message before new attempt
+    setErrorMessage("");
     try {
-      await signInWithPopup(auth, googleAuthProvider);
-      setUser(auth);
+      const result = await signInWithPopup(auth, googleAuthProvider);
+      const user = result.user;
+
+      setUser(user);
       setCount(1);
-      navigate("/"); // Redirect after successful login
+      navigate("/");
+
+      // Add user to Firestore if not already added
+      const userNameFromEmail = user.email.split("@")[0];
+      await addUser(userNameFromEmail, user);
     } catch (error) {
       setErrorMessage("Google sign-in failed. Please try again.");
+    }
+  };
+
+  const checkUser = async (userEmail) => {
+    const userDoc = await getDoc(doc(db, "users", userEmail.split("@")[0]));
+    return userDoc.exists();
+  };
+
+  const addUser = async (userNameFromEmail, user) => {
+    const userExists = await checkUser(user.email);
+
+    if (userExists) {
+      console.warn("User already exists in Firestore.");
+      return;
+    }
+
+    const userToAdd = {
+      name: user.displayName || "Anonymous User",
+      email: user.email,
+      favorites: [],
+    };
+
+    try {
+      await setDoc(doc(db, "users", userNameFromEmail), userToAdd);
+      console.log("User added/updated successfully.");
+    } catch (error) {
+      console.error("Error adding user to Firestore:", error);
     }
   };
 
