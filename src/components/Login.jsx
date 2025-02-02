@@ -21,9 +21,9 @@ function Login({ setUser, setCount }) {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      setUser(true);
+      setUser(auth);
       setCount(1);
-      navigate("/dashboard"); // Redirect after successful login
+      navigate("/"); // Redirect after successful login
     } catch (error) {
       setErrorMessage(error.message || "Invalid email or password.");
     }
@@ -33,9 +33,9 @@ function Login({ setUser, setCount }) {
     setErrorMessage(""); // Clear error message before new attempt
     try {
       await signInWithPopup(auth, googleAuthProvider);
-      setUser(true);
+      setUser(auth);
       setCount(1);
-      navigate("/dashboard"); // Redirect after successful login
+      navigate("/"); // Redirect after successful login
     } catch (error) {
       setErrorMessage("Google sign-in failed. Please try again.");
     }

@@ -29,7 +29,6 @@ const DbContextProvider = ({ children }) => {
         try {
           const userDoc = doc(db, "users", user.email.split("@")[0]);
           const docSnap = await getDoc(userDoc);
-
           if (docSnap.exists()) {
             setDbData(docSnap.data());
             setDbPresent(true);

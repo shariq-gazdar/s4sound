@@ -74,10 +74,6 @@ function SignUp({ setUser, setCount }) {
   };
   const addUser = async (userNameFromEmail) => {
     checkUser();
-    if (!dbPresent) {
-      console.warn("Database not available. User not added.");
-      return;
-    }
 
     try {
       if (exist) {
@@ -168,7 +164,13 @@ function SignUp({ setUser, setCount }) {
         </button>
         <h1 className="text-white">
           Already have an account{" "}
-          <Link to="/login" className="text-blue-500">
+          <Link
+            to="/login"
+            className="text-blue-500"
+            onClick={() => {
+              setCount(2);
+            }}
+          >
             login
           </Link>
         </h1>

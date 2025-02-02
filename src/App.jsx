@@ -33,10 +33,14 @@ function App() {
 
   // Navigate based on authentication state when `user` changes
   useEffect(() => {
-    if (user === null) {
+    console.log(count);
+
+    if (count === 0) {
       navigate("/signup");
     } else if (user && count == 1) {
       navigate("/");
+    } else if (count == 2) {
+      navigate("/login");
     }
   }, [user, navigate]);
 
@@ -58,6 +62,10 @@ function App() {
             ) : (
               <>
                 {/* Unauthenticated route */}
+                <Route
+                  path="/login"
+                  element={<Login setUser={setUser} setCount={setCount} />}
+                />
                 <Route
                   path="/signup"
                   element={<SignUp setUser={setUser} setCount={setCount} />}
