@@ -28,7 +28,7 @@ function LibCards() {
   return (
     <>
       <div className="p-10 grid grid-rows-2 grid-cols-3 gap-x-10  max-h-[90%] overflow-scroll lg:max-h-[100%]">
-        {favoritesThumbnail && (
+        {favoritesThumbnail ? (
           <motion.div
             className="favorites rounded-2xl bg-zinc-800 hover:bg-green-700 w-52 h-[105%]"
             whileHover={{ scale: 1.02 }}
@@ -45,7 +45,7 @@ function LibCards() {
               <img src={heart} alt="Heart Icon" className="w-8" />
             </h1>
           </motion.div>
-        )}
+        ) : null}
 
         {playlists?.map((playlist, index) => (
           <motion.div
