@@ -5,6 +5,7 @@ import { updateDoc, doc, arrayUnion } from "firebase/firestore";
 import Fav from "./playerAssests/favorite.png";
 import FillFav from "./playerAssests/fillFav.png";
 import dbContext from "../context/DbContext";
+import Modal from "./ChoiceModal";
 import MediaContext from "../context/MediaContext";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -34,6 +35,7 @@ const cardVariants = {
 
 function CardsContainer({ result }) {
   const [favorites, setFavorites] = useState({});
+  const [modal, setModal] = useState(false);
   const { dbData } = useContext(dbContext);
   const { setVideoId, setAllIds, setInfo } = useContext(MediaContext);
 
@@ -117,12 +119,20 @@ function CardsContainer({ result }) {
                       );
                     }}
                   />
-                  <motion.span className="-ml-8" whileHover={{ scale: 1.1 }}>
+                  <motion.span
+                    className="-ml-8"
+                    whileHover={{ scale: 1.1 }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setModal(true);
+                    }}
+                  >
                     ☰
                   </motion.span>
                 </motion.div>
               );
             })}
+            {modal && <Modal closeFunc={setModal} />}
           </motion.div>
         ) : (
           <div className="text-white ml-10">Search for your favorite songs</div>

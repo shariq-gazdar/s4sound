@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../config/firebase";
-import { doc, getDoc, getDocs, collection } from "firebase/firestore";
+import { doc, collection, onSnapshot } from "firebase/firestore"; // Changed imports
 import { onAuthStateChanged } from "firebase/auth";
 import DbContext from "./DbContext";
 
@@ -10,43 +10,54 @@ const DbContextProvider = ({ children }) => {
   const [d, setD] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (user) => {
-      const fetchUsers = async () => {
-        try {
-          const querySnapshot = await getDocs(collection(db, "users"));
-          const docs = querySnapshot.docs.map((doc) => ({
+    let userUnsubscribe = null;
+    let usersUnsubscribe = null;
+
+    const authUnsubscribe = onAuthStateChanged(auth, async (user) => {
+      // Real-time listener for users collection
+      try {
+        usersUnsubscribe = onSnapshot(collection(db, "users"), (snapshot) => {
+          const docs = snapshot.docs.map((doc) => ({
             id: doc.id,
             ...doc.data(),
           }));
-          // console.log(docs);
           setD(docs);
-        } catch (error) {
-          console.error("Error fetching users:", error);
-        }
-      };
-      fetchUsers();
+        });
+      } catch (error) {
+        console.error("Error listening to users collection:", error);
+      }
+
       if (user) {
         try {
           const userDoc = doc(db, "users", user.email.split("@")[0]);
-          const docSnap = await getDoc(userDoc);
-          if (docSnap.exists()) {
-            setDbData(docSnap.data());
-            setDbPresent(true);
-          } else {
-            console.warn("User document not found in Firestore.");
-            setDbData(null);
-          }
+
+          // Real-time listener for user document
+          userUnsubscribe = onSnapshot(userDoc, (docSnap) => {
+            if (docSnap.exists()) {
+              setDbData(docSnap.data());
+              setDbPresent(true);
+            } else {
+              console.warn("User document not found in Firestore.");
+              setDbData(null);
+              setDbPresent(false);
+            }
+          });
         } catch (err) {
-          console.error("Error fetching user data:", err);
+          console.error("Error setting up user listener:", err);
         }
       } else {
-        setDbData(null); // Reset on logout
+        setDbData(null);
         setDbPresent(false);
       }
     });
 
-    return () => unsubscribe(); // ✅ Cleanup auth listener
-  }, []); // ✅ Runs once when `auth` state changes
+    // Cleanup function
+    return () => {
+      authUnsubscribe();
+      userUnsubscribe?.();
+      usersUnsubscribe?.();
+    };
+  }, [db]);
 
   return (
     <DbContext.Provider value={{ dbData, setDbData, dbPresent, d }}>
