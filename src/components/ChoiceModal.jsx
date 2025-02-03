@@ -13,13 +13,14 @@ function ChoiceModal({ closeFunc }) {
       }}
     >
       <motion.div
-        className="modal bg-neutral-800 flex flex-col w-80 gap-y-10 p-10 rounded-xl"
+        className="modal bg-neutral-800 flex flex-col w-80 gap-y-10 p-10 rounded-xl items-center"
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}
         transition={{ duration: 0.2 }}
-        onClick={(e) => e.stopPropagation()} // Prevent click from bubbling to parent
+        onClick={(e) => e.stopPropagation()}
       >
+        <h1>Your Playlists:</h1>
         {playlists.map((p) => (
           <motion.button
             key={p.id}
@@ -29,11 +30,10 @@ function ChoiceModal({ closeFunc }) {
               closeFunc(true);
             }}
           >
-            <input type="checkbox" />
             <div className="">{p.name}</div>
           </motion.button>
         ))}
-        <motion.button
+        {/* <motion.button
           className="h-10 bg-green-800 rounded-lg text-white hover:border"
           whileHover={{ scale: 1.02 }}
           onClick={() => {
@@ -41,7 +41,7 @@ function ChoiceModal({ closeFunc }) {
           }}
         >
           Add
-        </motion.button>
+        </motion.button> */}
       </motion.div>
     </motion.div>
   );

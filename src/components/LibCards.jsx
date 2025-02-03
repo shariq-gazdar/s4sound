@@ -22,15 +22,15 @@ function LibCards() {
     await updateDoc(docRef, {
       playlists: arrayRemove(title),
     });
-    window.location.reload();
   };
 
   return (
     <>
-      <div className="p-10 grid grid-rows-2 grid-cols-3 gap-x-10  max-h-[90%] overflow-scroll lg:max-h-[100%]">
+      <div className="p-10 flex gap-x-5 flex-wrap max-h-[90%] overflow-scroll lg:h-fit gap-y-5 justify-center lg:justify-start">
+        {/* Favorites Playlist */}
         {favoritesThumbnail ? (
           <motion.div
-            className="favorites rounded-2xl bg-zinc-800 hover:bg-green-700 w-52 h-[105%]"
+            className="favorites rounded-2xl bg-zinc-800 hover:bg-green-700 w-52 h-fit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.9, transition: { duration: 0.3 } }}
             onClick={() => navigate(`/favorites`)}
@@ -42,15 +42,15 @@ function LibCards() {
             />
             <h1 className="flex items-center text-white p-2 justify-center gap-x-2">
               Favorites
-              <img src={heart} alt="Heart Icon" className="w-8" />
+              <img src={heart} alt="Heart Icon" className="w-5" />
             </h1>
           </motion.div>
         ) : null}
-
+        {/* Playlists */}
         {playlists?.map((playlist, index) => (
           <motion.div
             key={index}
-            className="playlist rounded-2xl bg-zinc-800 hover:bg-green-700 w-52 relative h-[105%]"
+            className="playlist rounded-2xl bg-zinc-800 hover:bg-green-700 w-52 relative h-fit "
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.9, transition: { duration: 0.3 } }}
             onClick={() => navigate(`/playlist/${playlist.id}`)}
@@ -77,8 +77,9 @@ function LibCards() {
           </motion.div>
         ))}
 
+        {/* New Playlist */}
         <motion.div
-          className="addPlaylist flex justify-center items-center border-dashed border-2 border-zinc-600 w-52 h-[100%] flex-col rounded-2xl cursor-pointer hover:border-green-500 my-12"
+          className="addPlaylist flex justify-center items-center border-dashed border-2 border-zinc-600 w-52 h-52 flex-col rounded-2xl cursor-pointer hover:border-green-500 "
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.9, transition: { duration: 0.3 } }}
           onClick={() => setModal(true)}
