@@ -78,7 +78,7 @@ function LibCards() {
         ))}
 
         <motion.div
-          className="addPlaylist flex justify-center items-center border-dashed border-2 border-zinc-600 w-52 h-[105%] flex-col rounded-2xl cursor-pointer hover:border-green-500 "
+          className="addPlaylist flex justify-center items-center border-dashed border-2 border-zinc-600 w-52 h-[100%] flex-col rounded-2xl cursor-pointer hover:border-green-500 my-12"
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.9, transition: { duration: 0.3 } }}
           onClick={() => setModal(true)}
