@@ -38,6 +38,10 @@ function CardsContainer({ result }) {
   const [modal, setModal] = useState(false);
   const { dbData } = useContext(dbContext);
   const { setVideoId, setAllIds, setInfo } = useContext(MediaContext);
+  const [id, setId] = useState("");
+  const [title, setTitle] = useState("");
+  const [channelTitle, setChannelTitle] = useState("");
+  const [thumbnail, setThumbnail] = useState("");
 
   const handleCardClick = (videoId) => {
     console.log("clicked");
@@ -72,6 +76,13 @@ function CardsContainer({ result }) {
         favorites: arrayUnion({ videoId, title, channelTitle, thumbnail }),
       }).catch((error) => console.error("Error updating Firestore:", error));
     }
+  };
+  const addToPlaylist = (id, title, ct, t) => {
+    setModal(true);
+    setId(id);
+    setTitle(title);
+    setChannelTitle(ct);
+    setThumbnail(t);
   };
 
   return (
@@ -124,7 +135,12 @@ function CardsContainer({ result }) {
                     whileHover={{ scale: 1.1 }}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setModal(true);
+                      addToPlaylist(
+                        videoId,
+                        title,
+                        channelTitle,
+                        thumbnails.high.url
+                      );
                     }}
                   >
                     ☰
@@ -132,7 +148,15 @@ function CardsContainer({ result }) {
                 </motion.div>
               );
             })}
-            {modal && <Modal closeFunc={setModal} />}
+            {modal && (
+              <Modal
+                closeFunc={setModal}
+                id={id}
+                title={title}
+                channelTitle={channelTitle}
+                thumbnail={thumbnail}
+              />
+            )}
           </motion.div>
         ) : (
           <div className="text-white ml-10">Search for your favorite songs</div>

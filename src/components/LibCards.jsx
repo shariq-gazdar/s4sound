@@ -9,9 +9,11 @@ import del from "./playerAssests/delete.svg";
 import { updateDoc, arrayRemove, doc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import { auth, db } from "../config/firebase";
+import PlaylistContext from "../context/PlaylistContext";
 
 function LibCards() {
   const { dbData } = useContext(dbContext);
+  const { setPath } = useContext(PlaylistContext);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
   const favoritesThumbnail = dbData?.favorites?.[0]?.thumbnail;
@@ -33,7 +35,7 @@ function LibCards() {
             className="favorites rounded-2xl bg-zinc-800 hover:bg-green-700 w-52 h-fit"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.9, transition: { duration: 0.3 } }}
-            onClick={() => navigate(`/favorites`)}
+            onClick={() => navigate(`/favorites `)}
           >
             <img
               src={favoritesThumbnail}
@@ -53,10 +55,15 @@ function LibCards() {
             className="playlist rounded-2xl bg-zinc-800 hover:bg-green-700 w-52 relative h-fit "
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.9, transition: { duration: 0.3 } }}
-            onClick={() => navigate(`/playlist/${playlist.id}`)}
+            onClick={() => {
+              setPath(playlist.name);
+              navigate(`/playlist/${playlist.name}`);
+            }}
           >
             <img
-              src={playlist.songs[0]?.thumbnail || dummy}
+              src={
+                playlist.songs[playlist.songs.length - 1]?.thumbnail || dummy
+              }
               alt="Playlist"
               className="w-52 h-52 object-cover rounded-t-2xl"
             />
@@ -76,7 +83,7 @@ function LibCards() {
             </h1>
           </motion.div>
         ))}
-
+  
         {/* New Playlist */}
         <motion.div
           className="addPlaylist flex justify-center items-center border-dashed border-2 border-zinc-600 w-52 h-52 flex-col rounded-2xl cursor-pointer hover:border-green-500 "

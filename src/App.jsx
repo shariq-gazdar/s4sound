@@ -11,9 +11,11 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import Favorites from "./components/Favorites";
 import DbContextProvider from "./context/DbContextProvider";
 import MediaContextProvider from "./context/MediaContextProvider";
+import PlaylistContextProvider from "./context/PlaylistContextProvider";
 import YtMediaConsumer from "./components/YtMediaConsumer";
 import Library from "./components/Library";
 import Login from "./components/Login";
+import Playlist from "./components/Playlist";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -48,26 +50,35 @@ function App() {
   return (
     <DbContextProvider>
       <MediaContextProvider>
-        <div className="bg-neutral-900">
-          <Routes>
-            {user ? (
-              <>
-                {/* Authenticated routes */}
-                <Route path="/" element={<Homepage setUser={setUser} />} />
-                <Route path="/favorites" element={<Favorites />} />
-                <Route path="/library" element={<Library />} />
-              </>
-            ) : (
-              <>
-                {/* Unauthenticated routes */}
-                <Route path="/login" element={<Login setUser={setUser} />} />
-                <Route path="/signup" element={<SignUp setUser={setUser} />} />
-              </>
-            )}
-            <Route path="*" element={<Homepage />} />
-          </Routes>
-          <YtMediaConsumer />
-        </div>
+        <PlaylistContextProvider>
+          <div className="bg-neutral-900">
+            <Routes>
+              {user ? (
+                <>
+                  {/* Authenticated routes */}
+                  <Route path="/" element={<Homepage setUser={setUser} />} />
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/library" element={<Library />} />
+                  <Route
+                    path="/playlist/:playlistName"
+                    element={<Playlist />}
+                  />
+                </>
+              ) : (
+                <>
+                  {/* Unauthenticated routes */}
+                  <Route path="/login" element={<Login setUser={setUser} />} />
+                  <Route
+                    path="/signup"
+                    element={<SignUp setUser={setUser} />}
+                  />
+                </>
+              )}
+              <Route path="*" element={<Homepage />} />
+            </Routes>
+            <YtMediaConsumer />
+          </div>
+        </PlaylistContextProvider>
       </MediaContextProvider>
     </DbContextProvider>
   );
