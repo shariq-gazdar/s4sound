@@ -11,7 +11,7 @@ function SideBar() {
   };
 
   return (
-    <div className="w-full md:w-1/4 bg-zinc-800 rounded-r-xl lg:border-b-4 border-t-4 border-r-4 pt-5 border-green-600 hidden lg:block border-dashed">
+    <div className="w-full md:w-1/4 bg-zinc-800 rounded-r-xl lg:border-b-4 border-t-4 border-r-4 pt-5 border-green-600 hidden lg:block border-dashed ">
       {/* Logo and Menu Button */}
       <div className="flex items-center justify-between p-4">
         <NavLink to="/">
