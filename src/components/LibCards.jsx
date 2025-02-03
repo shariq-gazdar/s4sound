@@ -16,7 +16,8 @@ function LibCards() {
   const { setPath } = useContext(PlaylistContext);
   const [modal, setModal] = useState(false);
   const navigate = useNavigate();
-  const favoritesThumbnail = dbData?.favorites?.[0]?.thumbnail;
+  const favoritesThumbnail =
+    dbData?.favorites?.[dbData.favorites.length - 1]?.thumbnail;
   const playlists = dbData?.playlists;
   const deletePlaylists = async (title) => {
     const docRef = doc(db, "users", auth.currentUser.email.split("@")[0]);
@@ -83,7 +84,7 @@ function LibCards() {
             </h1>
           </motion.div>
         ))}
-  
+
         {/* New Playlist */}
         <motion.div
           className="addPlaylist flex justify-center items-center border-dashed border-2 border-zinc-600 w-52 h-52 flex-col rounded-2xl cursor-pointer hover:border-green-500 "

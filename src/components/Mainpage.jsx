@@ -3,6 +3,7 @@ import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
 import { auth } from "../config/firebase";
 import dbContext from "../context/DbContext";
+import mediaContext from "../context/MediaContext";
 
 function Mainpage({ setUser, setCount }) {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,9 +12,25 @@ function Mainpage({ setUser, setCount }) {
   const [exist, setExist] = useState(false);
   const [error, setError] = useState(null);
   const [invisible, setInvisible] = useState(true);
+  const [bgImage, setBgImage] = useState(""); // Fixed: Added state for background image
+  const { info, videoId } = useContext(mediaContext);
+
+  useEffect(() => {
+    // Find the current video info and set background image
+    const currentVideoInfo = info.find((i) => i.id === videoId);
+    if (currentVideoInfo) {
+      setBgImage(currentVideoInfo.thumbnail);
+    }
+  }, [videoId, info]); // Added proper dependencies
 
   return (
-    <div className="bg-neutral-900/5 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl">
+    <div
+      className="bg-neutral-900/5 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl bg-cover bg-center bg-no-repeat"
+      // style={{
+      //   backgroundImage: `url(${bgImage})`,
+      //   backdropFilter: "brightness(0.3)", // Add this for better text visibility
+      // }}
+    >
       <Nav
         setSearchTerm={setSearchTerm}
         setUser={setUser}
