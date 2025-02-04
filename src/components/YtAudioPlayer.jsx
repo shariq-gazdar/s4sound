@@ -452,7 +452,7 @@ const YouTubeController = () => {
                 className="w-5 absolute top-0 left-[50%]"
               />
             </button>
-            <div className="flex  text-white">
+            <div className="flex  text-white -ml-14">
               <img src={thumbnail} alt="" className="w-20" />
               <div className="flex flex-col justify-start">
                 <marquee
