@@ -10,12 +10,13 @@ import nt from "./playerAssests/next_track.png";
 import MediaContext from "../context/MediaContext";
 import blackFav from "./playerAssests/blackHeart.svg";
 import blackFill from "./playerAssests/blackHeartFill.svg";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import dbContext from "../context/DbContext";
 import "./mainStyle.css";
 import { doc, updateDoc, arrayUnion, arrayRemove } from "firebase/firestore";
 import React from "react";
 import { db, auth } from "../config/firebase";
+import { video } from "framer-motion/client";
 
 const YouTubeController = () => {
   const { videoId, setVideoId, allIds, info } = useContext(MediaContext);
@@ -31,6 +32,7 @@ const YouTubeController = () => {
   const [previousVol, setPreviousVol] = useState(50);
   const [mute, setMute] = useState(false);
   const [title, setTitle] = useState("");
+  const [dominantColor, setDominantColor] = useState(null);
   const [channelName, setChannelName] = useState("");
   const [thumbnail, setThumbnail] = useState("");
   const [fav, setFav] = useState(() => {
@@ -45,6 +47,10 @@ const YouTubeController = () => {
 
       tag.onload = () => {
         window.onYouTubeIframeAPIReady = initializePlayer;
+      };
+
+      tag.onerror = () => {
+        console.error("Failed to load YouTube IFrame API");
       };
     } else {
       initializePlayer();
@@ -184,9 +190,13 @@ const YouTubeController = () => {
     }
 
     const nextIndex = (currentIndex - 1) % allIds.length;
-    const nextVideoId = allIds[nextIndex];
-
-    setVideoId(nextVideoId);
+    if (nextIndex < 0) {
+      const nextVideoId = allIds[allIds.length - 1];
+      setVideoId(nextVideoId);
+    } else {
+      const nextVideoId = allIds[nextIndex];
+      setVideoId(nextVideoId);
+    }
   };
 
   const handleInfo = (info) => {
@@ -209,29 +219,29 @@ const YouTubeController = () => {
   };
   const handleShortcuts = (e) => {
     switch (e.key) {
-      case "k": {
-        if (isPlaying) {
-          handlePause();
-        } else {
-          handlePlay();
-        }
+      case "k":
+        if (isPlaying) handlePause();
+        else handlePlay();
         break;
-      }
       case "ArrowRight":
-      case "l": {
+      case "l":
         handleSkip();
         break;
-      }
       case "ArrowLeft":
-      case "j": {
+      case "j":
         handleReverse();
         break;
-      }
-      default: {
+      case "m":
+        handleMute();
         break;
-      }
+      case "f":
+        handleFav();
+        break;
+      default:
+        break;
     }
   };
+
   const handleFav = async () => {
     if (!auth.currentUser) {
       console.error("User not authenticated");
@@ -244,33 +254,90 @@ const YouTubeController = () => {
         await updateDoc(userDoc, {
           favorites: arrayRemove(favData),
         });
-        setFavorites((prev) => {
-          const newFavs = { ...prev };
-          delete newFavs[videoId];
-          return newFavs;
-        });
       } else {
         await updateDoc(userDoc, {
           favorites: arrayUnion(favData),
         });
-        setFavorites((prev) => ({
-          ...prev,
-          [videoId]: favData,
-        }));
       }
       setFav(!fav);
     } catch (error) {
       console.error("Error updating favorites:", error);
-      // Consider rolling back state here
     }
   };
+  const getDominantColor = (imageUrl, callback) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+
+    img.src = imageUrl;
+
+    img.onload = function () {
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
+      // Set canvas dimensions to image size
+      canvas.width = img.width;
+      canvas.height = img.height;
+
+      // Draw image on canvas
+      ctx.drawImage(img, 0, 0);
+
+      // Get pixel data
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const data = imageData.data;
+
+      // Color frequency counter
+      const colorCounts = {};
+      let maxCount = 0;
+      let dominantColor = "";
+
+      // Iterate through pixels
+      for (let i = 0; i < data.length; i += 4) {
+        const r = data[i];
+        const g = data[i + 1];
+        const b = data[i + 2];
+        const a = data[i + 3];
+        if (a < 255) continue;
+        const colorKey = `${r},${g},${b}`;
+
+        colorCounts[colorKey] = (colorCounts[colorKey] || 0) + 1;
+
+        if (colorCounts[colorKey] > maxCount) {
+          maxCount = colorCounts[colorKey];
+          dominantColor = colorKey;
+        }
+      }
+
+      // Convert to hex format
+      const [red, green, blue] = dominantColor.split(",").map(Number);
+      const hexColor = `#${red.toString(16).padStart(2, "0")}${green
+        .toString(16)
+        .padStart(2, "0")}${blue.toString(16).padStart(2, "0")}`;
+
+      callback(hexColor);
+    };
+
+    img.onerror = function () {
+      console.error("Error loading image");
+      callback(null); // Handle error in callback
+    };
+  };
+  useEffect(() => {
+    if (thumbnail) {
+      getDominantColor(thumbnail, (color) => {
+        setDominantColor(color);
+        console.log("Dominant Color:", color); // Log correctly
+      });
+    }
+    console.log(dominantColor);
+  }, [videoId]); // Depend only on `thumbnail`
 
   return (
     <div>
       <div id="ytplayer" className="h-0 fixed left-0 w-0 bottom-0"></div>
 
       <motion.div
-        className="controls fixed left-0 bottom-0 text-white px-20 py-10 flex bg-green-700 w-full items-center justify-between rounded-t-2xl h-36 mb-14 lg:mb-0 "
+        className="controls fixed left-0 bottom-0 text-white px-20 py-10 flex w-full items-center justify-between rounded-t-2xl h-36 mb-14 lg:mb-0"
+        style={{ backgroundColor: dominantColor || "#15803d" }} // Default fallback
         initial={{ y: -200 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.25 }}

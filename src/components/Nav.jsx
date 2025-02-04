@@ -63,6 +63,7 @@ function Nav({
   const removeSearch = () => {
     setIcon(!icon);
     setInvisible(!invisible);
+    setSearchTerm("");
   };
 
   return (
@@ -72,6 +73,7 @@ function Nav({
           type="text"
           className="border-none hover:ring-2 hover:ring-green-600 focus:outline-none w-[20rem] lg:w-[25rem] rounded-2xl bg-gray-100/10 p-2 px-4"
           placeholder="Search"
+          value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
           }}

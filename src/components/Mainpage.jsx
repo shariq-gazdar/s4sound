@@ -24,13 +24,13 @@ function Mainpage({ setUser, setCount }) {
   }, [videoId, info]); // Added proper dependencies
 
   return (
-    <div
-      className="bg-neutral-900/5 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl bg-cover bg-center bg-no-repeat"
-      // style={{
-      //   backgroundImage: `url(${bgImage})`,
-      //   backdropFilter: "brightness(0.3)", // Add this for better text visibility
-      // }}
-    >
+    <div className="bg-neutral-900/5 w-full lg:w-3/4 h-screen p-5 rounded-l-3xl ">
+      {/* {!invisible ? (
+        <div className="absolute  top-2 opacity-50 blur-sm  shadow-white">
+          <img src={bgImage} alt="" className="w-[60vw] h-[50vh]" />
+        </div>
+      ) : null} */}
+
       <Nav
         setSearchTerm={setSearchTerm}
         setUser={setUser}

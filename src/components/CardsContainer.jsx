@@ -159,7 +159,7 @@ function CardsContainer({ result }) {
             )}
           </motion.div>
         ) : (
-          <div className="text-white ml-10">Search for your favorite songs</div>
+          <div className="text-white  ">Search for your favorite songs</div>
         )}
       </AnimatePresence>
     </div>
