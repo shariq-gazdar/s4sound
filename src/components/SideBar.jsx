@@ -4,6 +4,8 @@ import { NavLink } from "react-router-dom";
 import FillFav from "./playerAssests/fillFav.png";
 import playList from "./playerAssests/playList.svg";
 import { motion } from "framer-motion";
+import { ResizableBox } from "react-resizable";
+import "react-resizable/css/styles.css";
 function SideBar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const toggleMenu = () => {

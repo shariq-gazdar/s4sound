@@ -6,6 +6,7 @@ import { auth, db } from "../config/firebase";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, getDocs, collection } from "firebase/firestore";
 import dbContext from "../context/DbContext";
+import mediaContext from "../context/MediaContext";
 
 function Nav({
   setSearchTerm,
@@ -20,6 +21,7 @@ function Nav({
   const [url, setUrl] = useState(dummy);
   const [mobUser, setMobUser] = useState(false);
   const [icon, setIcon] = useState(false);
+  const { setVideoId, setAllIds } = useContext(mediaContext);
 
   useEffect(() => {
     if (auth.currentUser) {
@@ -53,6 +55,7 @@ function Nav({
     signOut(auth);
     setUser(false);
     setCount(0);
+    window.location.reload();
   };
 
   const handleKeyDown = (e) => {
