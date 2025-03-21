@@ -444,7 +444,7 @@ const YouTubeController = () => {
             </div>
           </motion.div>
 
-          <motion.div className="fixed left-0 bottom-14 w-full h-24 bg-green-800 text-center items-center justify-between flex overflow-hidden px-10 gap-x-2 lg:hidden">
+          <motion.div className="fixed left-0 bottom-16 w-full h-24 bg-green-800 text-center items-center justify-between flex overflow-hidden px-10 gap-x-2 lg:hidden">
             <button>
               <img
                 src={upArrow}

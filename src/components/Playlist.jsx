@@ -5,6 +5,7 @@ import SideBar from "./SideBar";
 import backArrow from "./playerAssests/backArrow.svg";
 import { motion, AnimatePresence } from "framer-motion";
 import mediaContext from "../context/MediaContext";
+import DownRow from "./DownRow";
 
 function Playlist() {
   const { dbData } = useContext(dbContext);
@@ -110,6 +111,7 @@ function Playlist() {
           </AnimatePresence>
         </div>
       </div>
+      <DownRow />
     </div>
   );
 }
