@@ -62,7 +62,7 @@ function Playlist() {
     <div className="h-screen flex text-white">
       <SideBar />
       <div className="flex-1 overflow-y-auto">
-        <div className="flex justify-between items-center px-10 pt-10 font-bold text-4xl">
+        <div className="flex justify-between items-center px-10 pt-10 font-bold text-4xl ">
           <h1 className="">{playlistName}</h1>
           <motion.img
             src={backArrow}
@@ -75,7 +75,7 @@ function Playlist() {
             }}
           />
         </div>
-        <div className="py-10 px-10">
+        <div className="py-10 px-10 h-[80vh] overflow-scroll">
           <AnimatePresence>
             {currentPlaylist ? (
               <motion.div
