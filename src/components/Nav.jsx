@@ -3,9 +3,8 @@ import Search from "./playerAssests/search.svg";
 import Close from "./playerAssests/close.png";
 import dummy from "../assets/google.png";
 import { auth, db } from "../config/firebase";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import { doc, getDocs, collection } from "firebase/firestore";
-import dbContext from "../context/DbContext";
+import { signOut } from "firebase/auth";
+import jsonp from "jsonp";
 import mediaContext from "../context/MediaContext";
 
 function Nav({
@@ -16,6 +15,7 @@ function Nav({
   setCount,
   setInvisible,
   invisible,
+  setSuggest,
 }) {
   const [userName, setUserName] = useState("");
   const [url, setUrl] = useState(dummy);
@@ -26,17 +26,19 @@ function Nav({
   useEffect(() => {
     if (auth.currentUser) {
       setUserName(auth.currentUser.email.split("@")[0]);
-      setUrl(auth.currentUser.photoURL || dummy); // Fallback to dummy if photoURL is null/undefined
+      setUrl(auth.currentUser.photoURL || dummy);
     }
   }, [auth.currentUser]);
+
   const API_KEY = import.meta.env.VITE_YOUTUBESEARCH_APIKEY;
+
   const apiUpdate = () => {
     setIcon(!icon);
     setInvisible(true);
     setResult([]);
     if (searchTerm) {
       fetch(
-        `  https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchTerm}&type=video&videoCategoryId=10&key=${API_KEY}`
+        `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${searchTerm}&type=video&videoCategoryId=10&key=${API_KEY}`
       )
         .then((res) => res.json())
         .then((data) => {
@@ -51,6 +53,21 @@ function Nav({
     }
   };
 
+  const suggestUpdate = (term) => {
+    const url = `https://suggestqueries.google.com/complete/search?client=youtube&ds=yt&q=${encodeURIComponent(
+      term
+    )}`;
+
+    jsonp(url, null, (err, data) => {
+      if (err) {
+        console.log("Error fetching suggestions:", err);
+        alert("Failed to fetch suggestions.");
+      } else {
+        setSuggest(data[1].map((item) => item[0]));
+      }
+    });
+  };
+
   const handleSignOut = () => {
     signOut(auth);
     setUser(false);
@@ -63,6 +80,7 @@ function Nav({
       apiUpdate();
     }
   };
+
   const removeSearch = () => {
     setIcon(!icon);
     setInvisible(!invisible);
@@ -78,7 +96,11 @@ function Nav({
           placeholder="Search"
           value={searchTerm}
           onChange={(e) => {
-            setSearchTerm(e.target.value);
+            const val = e.target.value;
+            setSearchTerm(val);
+            if (val.length >= 2) {
+              suggestUpdate(val);
+            }
           }}
           onKeyDown={handleKeyDown}
         />
