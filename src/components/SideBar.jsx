@@ -13,7 +13,7 @@ function SideBar() {
   };
 
   return (
-    <div className="w-full md:w-1/4 bg-zinc-800 rounded-r-xl lg:border-b-4 border-t-4 border-r-4 pt-5 border-green-600 hidden lg:block border-dashed ">
+    <div className="w-[15%]  bg-zinc-800 rounded-r-xl lg:border-b-4 border-t-4 border-r-4 pt-5 border-green-600 hidden lg:block border-dashed ">
       {/* Logo and Menu Button */}
       <div className="flex items-center justify-between p-4">
         <NavLink to="/">
@@ -39,7 +39,7 @@ function SideBar() {
             <NavLink
               to="/favorites"
               className={({ isActive }) =>
-                `text-xl flex items-end gap-x-2 transition-colors ${
+                `text-lg flex items-end gap-x-2 transition-colors ${
                   isActive ? "text-white" : "text-neutral-100/70"
                 } hover:text-white`
               }
@@ -59,7 +59,7 @@ function SideBar() {
             <NavLink
               to="/library"
               className={({ isActive }) =>
-                `text-xl flex items-end gap-x-2 transition-colors ${
+                `text-lg flex items-end gap-x-2 transition-colors ${
                   isActive ? "text-white" : "text-neutral-100/70"
                 } hover:text-white`
               }
