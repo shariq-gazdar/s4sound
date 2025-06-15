@@ -53,7 +53,7 @@ function Mainpage({ setUser, setCount }) {
         <div className="text-white ml-10">Search for your favorite songsC</div>
       )}
       {suggest.length && searchTerm.length ? (
-        <Suggestions suggest={suggest} />
+        <Suggestions suggest={suggest} setSearchTerm={setSearchTerm} />
       ) : (
         <div className="text-white ml-5">Search for your favorite songsS</div>
       )}
