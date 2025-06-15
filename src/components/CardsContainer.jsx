@@ -86,7 +86,18 @@ function CardsContainer({ result }) {
   };
 
   return (
-    <div className=" text-white flex flex-col gap-y-2 h-[calc(100%-175px)] w-full lg:max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden  ">
+    <div
+      className=" text-white flex flex-col gap-y-2 w-full lg:max-w-[90%] lg:ml-10 overflow-y-auto scrollbar-hide ml-0 overflow-x-hidden  "
+      style={
+        result.length
+          ? {
+              height: "calc(100% - 175px)",
+            }
+          : {
+              height: "0px",
+            }
+      }
+    >
       <AnimatePresence>
         {result?.length ? (
           <motion.div
@@ -158,9 +169,7 @@ function CardsContainer({ result }) {
               />
             )}
           </motion.div>
-        ) : (
-          <div className="text-white  ">Search for your favorite songs</div>
-        )}
+        ) : null}
       </AnimatePresence>
     </div>
   );

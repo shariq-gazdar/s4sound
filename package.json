@@ -13,6 +13,7 @@
     "@vitejs/plugin-react": "^4.3.4",
     "firebase": "^11.1.0",
     "framer-motion": "^12.0.6",
+    "jsonp": "^0.2.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-icons": "^5.4.0",
