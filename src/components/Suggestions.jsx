@@ -10,7 +10,8 @@ function Suggestions({ suggest, setSearchTerm }) {
             key={index}
             className="text-white cursor-pointer hover:bg-neutral-800 rounded-xl px-5 py-1"
             onClick={(e) => {
-              setSearchTerm(e.target.value);
+              // setSearchTerm(e.target.value);
+              console.log(e.target.value);
             }}
           >
             {suggestion}

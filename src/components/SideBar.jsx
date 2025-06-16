@@ -17,7 +17,7 @@ function SideBar() {
       {/* Logo and Menu Button */}
       <div className="flex items-center justify-between p-4">
         <NavLink to="/">
-          <img src={Logo} alt="App Logo" className="lg:w-44 w-20" />
+          <img src={Logo} alt="App Logo" className="lg:w-[90%] w-20" />
         </NavLink>
         <button
           className="md:hidden text-white text-3xl focus:outline-none"

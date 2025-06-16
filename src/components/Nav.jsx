@@ -88,7 +88,7 @@ function Nav({
   };
 
   return (
-    <nav className="flex justify-center lg:justify-between p-5 text-white items-center gap-x-10 gap-y-5 lg:gap-y-0 flex-wrap-reverse lg:flex-nowrap">
+    <nav className="flex justify-center lg:justify-between w-[115%] mt-5 px-5 text-white items-center flex-wrap-reverse lg:flex-nowrap">
       <div className="search relative">
         <input
           type="text"
@@ -120,29 +120,25 @@ function Nav({
           />
         )}
       </div>
-      <div className="flex w-full lg:gap-x-3 lg:justify-end justify-between items-center">
-        <div
-          className="relative"
-          onMouseEnter={() => setMobUser(true)}
-          onMouseLeave={() => setMobUser(false)}
-        >
+      <div className="flex w-full lg:justify-end justify-between items-center gap-x-3">
+        <div className="relative" onClick={() => setMobUser(!mobUser)}>
           <img
             src={url}
             alt="User Profile"
-            className="w-10 h-10 rounded-full cursor-pointer"
+            className="w-10 h-10 rounded-full cursor-pointer "
           />
           {mobUser && (
             <div className="absolute top-12 bg-neutral-800 text-white px-4 py-2 rounded-md">
-              {userName}
+              <button
+                className="bg-green-600 p-2 rounded-lg w-[100%]"
+                onClick={handleSignOut}
+              >
+                Sign Out
+              </button>
             </div>
           )}
         </div>
-        <button
-          className="bg-green-600 p-2 ml-0 lg:ml-10 rounded-lg"
-          onClick={handleSignOut}
-        >
-          Sign Out
-        </button>
+        <h1 className="font-bold">{userName}</h1>
       </div>
     </nav>
   );
