@@ -3,9 +3,8 @@ import Nav from "./Nav";
 import CardsContainer from "./CardsContainer";
 import Suggestions from "../components/Suggestions";
 import mediaContext from "../context/MediaContext";
-import IdContext from "../context/IdContext";
-function Mainpage({ setCount }) {
-  const { setUser } = useContext(IdContext);
+
+function Search({ setUser, setCount }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [result, setResult] = useState([]);
   const [error, setError] = useState(null);
@@ -76,4 +75,4 @@ function Mainpage({ setCount }) {
   );
 }
 
-export default Mainpage;
+export default Search;

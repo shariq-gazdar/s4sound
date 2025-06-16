@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   onAuthStateChanged,
   setPersistence,
@@ -16,9 +16,10 @@ import YtMediaConsumer from "./components/YtMediaConsumer";
 import Library from "./components/Library";
 import Login from "./components/Login";
 import Playlist from "./components/Playlist";
+import IdContext from "./context/IdContextProvider";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const { setUser } = useContext(IdContext);
   const [isAuthChecked, setIsAuthChecked] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -56,7 +57,7 @@ function App() {
               {user ? (
                 <>
                   {/* Authenticated routes */}
-                  <Route path="/" element={<Homepage setUser={setUser} />} />
+                  <Route path="/" element={<Homepage />} />
                   <Route path="/favorites" element={<Favorites />} />
                   <Route path="/library" element={<Library />} />
                   <Route

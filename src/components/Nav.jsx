@@ -16,6 +16,7 @@ function Nav({
   setInvisible,
   invisible,
   setSuggest,
+  setShowSuggestions,
 }) {
   const [userName, setUserName] = useState("");
   const [url, setUrl] = useState(dummy);
@@ -43,6 +44,7 @@ function Nav({
         .then((res) => res.json())
         .then((data) => {
           setResult(data.items);
+          setShowSuggestions(false);
         })
         .catch((err) => {
           console.error("Error fetching data:", err);
@@ -88,7 +90,7 @@ function Nav({
   };
 
   return (
-    <nav className="flex justify-center lg:justify-between w-[115%] mt-5 px-5 text-white items-center flex-wrap-reverse lg:flex-nowrap">
+    <nav className="flex justify-center lg:justify-between w-full mt-5 px-5 text-white items-center flex-wrap-reverse lg:flex-nowrap">
       <div className="search relative">
         <input
           type="text"
@@ -130,7 +132,7 @@ function Nav({
           {mobUser && (
             <div className="absolute top-12 bg-neutral-800 text-white px-4 py-2 rounded-md">
               <button
-                className="bg-green-600 p-2 rounded-lg w-[100%]"
+                className="bg-green-600 p-2 rounded-lg w-[5rem]"
                 onClick={handleSignOut}
               >
                 Sign Out

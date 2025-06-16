@@ -9,11 +9,11 @@ import YouTubeAudioPlayer from "./YtAudioPlayer";
 import DownRow from "./DownRow";
 import MediaContextProvider from "../context/MediaContextProvider";
 
-function Homepage({ setUser, setCount }) {
+function Homepage({ setCount }) {
   return (
     <div className="flex">
       <SideBar />
-      <Mainpage setUser={setUser} setCount={setCount} />
+      <Mainpage setCount={setCount} />
       <DownRow />
     </div>
   );
