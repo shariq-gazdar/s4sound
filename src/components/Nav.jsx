@@ -122,12 +122,16 @@ function Nav({
           />
         )}
       </div>
-      <div className="flex w-full lg:justify-end justify-between items-center gap-x-3">
-        <div className="relative" onClick={() => setMobUser(!mobUser)}>
+      <div className="flex w-full lg:gap-x-3 lg:justify-end justify-between items-center">
+        <div
+          className="relative"
+          onMouseEnter={() => setMobUser(true)}
+          onMouseLeave={() => setMobUser(false)}
+        >
           <img
             src={url}
             alt="User Profile"
-            className="w-10 h-10 rounded-full cursor-pointer "
+            className="w-10 h-10 rounded-full cursor-pointer"
           />
           {mobUser && (
             <div className="absolute top-12 bg-neutral-800 text-white px-4 py-2 rounded-md">
@@ -140,7 +144,12 @@ function Nav({
             </div>
           )}
         </div>
-        <h1 className="font-bold">{userName}</h1>
+        <button
+          className="bg-green-600 p-2 ml-0 lg:ml-10 rounded-lg"
+          onClick={handleSignOut}
+        >
+          Sign Out
+        </button>
       </div>
     </nav>
   );
